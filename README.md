@@ -17,6 +17,8 @@
   See all 5 learning paradigms (Supervised, Unsupervised, Semi-Supervised, Self-Supervised, and Reinforcement Learning) in action, with context-aware performance metrics.
 - **World-Class Responsive UI:**  
   Fully responsive design works beautifully on mobile phones and laptops, with an intuitive navigation experience.
+- **About Page:**  
+  Learn more about the project, its goals, and how it empowers both SMEs and youth. Accessible via the navigation menu or at `/about`.
 
 ## Machine Learning Paradigms
 
@@ -42,6 +44,10 @@
 - **SMEs:** Predict, visualize, and receive alerts about real-time cyber threats.  
 - **Youth/Learners:** Follow adaptive learning paths tailored by AI, enhance your skills, and track progress with competitive gamification.
 - **Admins:** Monitor ML pipeline health, add or retrain ML models, and oversee system performance at a glance.
+
+## About
+
+Visit the [About Page](/about) or use the "About" link in the navigation bar for a detailed project overview, technical design, and mission statement.
 
 ## Live Demo
 
@@ -74,3 +80,4 @@ MIT License
 ---
 
 Made with ❤️ for next-generation cyber defense and education.
+
