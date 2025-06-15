@@ -20,14 +20,14 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-cyan-400" />
-            <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <Shield className="h-6 w-6 md:h-8 md:w-8 text-cyan-400" />
+            <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
               Cybridge AI
             </span>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden lg:flex space-x-6 xl:space-x-8">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -42,17 +42,17 @@ const Navigation = () => {
                   }`}
                 >
                   <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
+                  <span className="text-sm xl:text-base">{item.label}</span>
                 </Link>
               );
             })}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-white"
+              className="text-gray-300 hover:text-white p-2"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -61,7 +61,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden pb-4">
+          <div className="lg:hidden pb-4 bg-black/40 backdrop-blur-lg rounded-lg mt-2 border border-white/10">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -70,14 +70,14 @@ const Navigation = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 mb-2 ${
+                  className={`flex items-center space-x-3 px-4 py-3 mx-2 rounded-lg transition-all duration-200 mb-1 ${
                     isActive
                       ? 'bg-cyan-500/20 text-cyan-400'
                       : 'text-gray-300 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
+                  <Icon className="h-5 w-5" />
+                  <span className="text-base">{item.label}</span>
                 </Link>
               );
             })}

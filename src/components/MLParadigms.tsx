@@ -128,10 +128,10 @@ const MLParadigms = () => {
     }
   };
 
-  const current = paradigms[selectedParadigm];
+  const current = paradigms[selectedParadigm as keyof typeof paradigms];
   const Icon = current.icon;
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'bg-green-500/20 text-green-400';
       case 'training': return 'bg-blue-500/20 text-blue-400';
@@ -140,7 +140,7 @@ const MLParadigms = () => {
     }
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case 'active': return <Play className="h-4 w-4" />;
       case 'training': return <Brain className="h-4 w-4 animate-pulse" />;
@@ -150,9 +150,9 @@ const MLParadigms = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       {/* Paradigm Selection */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
         {Object.entries(paradigms).map(([key, paradigm]) => {
           const ParadigmIcon = paradigm.icon;
           const isSelected = selectedParadigm === key;
@@ -161,14 +161,14 @@ const MLParadigms = () => {
             <button
               key={key}
               onClick={() => setSelectedParadigm(key)}
-              className={`p-4 rounded-xl border-2 transition-all duration-300 ${
+              className={`p-3 md:p-4 rounded-xl border-2 transition-all duration-300 ${
                 isSelected 
                   ? `bg-gradient-to-br ${paradigm.color} ${paradigm.borderColor} transform scale-105 shadow-lg`
                   : 'bg-black/30 border-white/10 hover:border-white/20 hover:bg-white/5'
               }`}
             >
-              <ParadigmIcon className={`h-8 w-8 mx-auto mb-2 ${isSelected ? 'text-white' : 'text-gray-400'}`} />
-              <h3 className={`font-semibold text-sm ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+              <ParadigmIcon className={`h-6 w-6 md:h-8 md:w-8 mx-auto mb-2 ${isSelected ? 'text-white' : 'text-gray-400'}`} />
+              <h3 className={`font-semibold text-xs md:text-sm ${isSelected ? 'text-white' : 'text-gray-300'}`}>
                 {paradigm.title.split(' ')[0]}
               </h3>
               <p className={`text-xs mt-1 ${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
@@ -181,17 +181,17 @@ const MLParadigms = () => {
 
       {/* Selected Paradigm Details */}
       <div className={`bg-gradient-to-br ${current.color} p-1 rounded-xl`}>
-        <div className="bg-black/80 backdrop-blur-lg p-8 rounded-lg">
-          <div className="flex items-center space-x-4 mb-6">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-              <Icon className="h-8 w-8 text-white" />
+        <div className="bg-black/80 backdrop-blur-lg p-4 md:p-8 rounded-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-white/20 rounded-full flex items-center justify-center">
+              <Icon className="h-6 w-6 md:h-8 md:w-8 text-white" />
             </div>
             <div className="flex-1">
-              <h2 className="text-3xl font-bold text-white mb-2">{current.title}</h2>
-              <p className="text-white/80 text-lg">{current.description}</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">{current.title}</h2>
+              <p className="text-white/80 text-base md:text-lg">{current.description}</p>
             </div>
-            <div className="text-right">
-              <div className="text-4xl font-bold text-white mb-1">{current.accuracy}%</div>
+            <div className="text-center sm:text-right">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-1">{current.accuracy}%</div>
               <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(current.status)}`}>
                 {getStatusIcon(current.status)}
                 <span className="capitalize">{current.status}</span>
@@ -199,36 +199,36 @@ const MLParadigms = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             {/* Implementation Details */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white mb-4">Implementation</h3>
+              <h3 className="text-lg md:text-xl font-bold text-white mb-4">Implementation</h3>
               
               <div className="bg-white/10 p-4 rounded-lg">
                 <h4 className="text-white font-semibold mb-2">Use Case</h4>
-                <p className="text-white/80">{current.useCase}</p>
+                <p className="text-white/80 text-sm md:text-base">{current.useCase}</p>
               </div>
               
               <div className="bg-white/10 p-4 rounded-lg">
                 <h4 className="text-white font-semibold mb-2">Algorithm</h4>
-                <p className="text-white/80">{current.algorithm}</p>
+                <p className="text-white/80 text-sm md:text-base">{current.algorithm}</p>
               </div>
               
               <div className="bg-white/10 p-4 rounded-lg">
                 <h4 className="text-white font-semibold mb-2">Data Size</h4>
-                <p className="text-white/80">{current.dataSize}</p>
+                <p className="text-white/80 text-sm md:text-base">{current.dataSize}</p>
               </div>
             </div>
 
             {/* Features and Performance */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white mb-4">Key Features</h3>
+              <h3 className="text-lg md:text-xl font-bold text-white mb-4">Key Features</h3>
               
               <div className="space-y-2">
                 {current.features.map((feature, index) => (
                   <div key={index} className="flex items-center space-x-2 text-white/80">
-                    <div className="w-2 h-2 bg-white/60 rounded-full" />
-                    <span>{feature}</span>
+                    <div className="w-2 h-2 bg-white/60 rounded-full flex-shrink-0" />
+                    <span className="text-sm md:text-base">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -238,7 +238,7 @@ const MLParadigms = () => {
                 <div className="grid grid-cols-2 gap-3">
                   {Object.entries(current.performance).map(([metric, value]) => (
                     <div key={metric} className="text-center">
-                      <div className="text-lg font-bold text-white">{value}%</div>
+                      <div className="text-base md:text-lg font-bold text-white">{value}%</div>
                       <div className="text-xs text-white/60 capitalize">
                         {metric.replace(/([A-Z])/g, ' $1').trim()}
                       </div>
@@ -252,18 +252,18 @@ const MLParadigms = () => {
       </div>
 
       {/* System Integration Flow */}
-      <div className="bg-black/30 backdrop-blur-lg border border-white/10 p-6 rounded-xl">
-        <h3 className="text-xl font-bold text-white mb-6">ML System Integration Flow</h3>
+      <div className="bg-black/30 backdrop-blur-lg border border-white/10 p-4 md:p-6 rounded-xl">
+        <h3 className="text-lg md:text-xl font-bold text-white mb-6">ML System Integration Flow</h3>
         
-        <div className="flex items-center justify-between space-x-4 overflow-x-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4 overflow-x-auto">
           {['Data Ingestion', 'Preprocessing', 'Model Training', 'Inference', 'Feedback Loop'].map((step, index) => (
-            <div key={index} className="flex items-center space-x-4 min-w-0">
-              <div className="bg-gradient-to-r from-cyan-500 to-purple-600 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold">
+            <div key={index} className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 min-w-0">
+              <div className="bg-gradient-to-r from-cyan-500 to-purple-600 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white font-bold text-sm md:text-base">
                 {index + 1}
               </div>
-              <div className="text-center">
-                <div className="text-white font-semibold">{step}</div>
-                <div className="text-gray-400 text-sm">
+              <div className="text-center sm:text-left">
+                <div className="text-white font-semibold text-sm md:text-base">{step}</div>
+                <div className="text-gray-400 text-xs md:text-sm">
                   {index === 0 && '2.4M/day'}
                   {index === 1 && '< 10ms'}
                   {index === 2 && 'Continuous'}
@@ -272,7 +272,10 @@ const MLParadigms = () => {
                 </div>
               </div>
               {index < 4 && (
-                <div className="text-gray-400">→</div>
+                <div className="text-gray-400 hidden sm:block">→</div>
+              )}
+              {index < 4 && (
+                <div className="text-gray-400 sm:hidden">↓</div>
               )}
             </div>
           ))}

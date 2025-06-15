@@ -15,56 +15,56 @@ const MLPipeline = () => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8 px-4 md:px-0">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-white mb-4">
+      <div className="text-center mb-8 md:mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
           ML Pipeline Architecture
         </h1>
-        <p className="text-gray-400 text-lg">
+        <p className="text-gray-400 text-base md:text-lg">
           Comprehensive machine learning system implementing all 5 learning paradigms
         </p>
       </div>
 
       {/* ML System Overview */}
-      <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 p-8 rounded-xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 p-4 md:p-8 rounded-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Cpu className="h-8 w-8 text-green-400" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-green-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Cpu className="h-6 w-6 md:h-8 md:w-8 text-green-400" />
             </div>
-            <h3 className="text-white font-bold mb-1">5 Active Models</h3>
-            <p className="text-gray-400 text-sm">All paradigms operational</p>
+            <h3 className="text-white font-bold mb-1 text-sm md:text-base">5 Active Models</h3>
+            <p className="text-gray-400 text-xs md:text-sm">All paradigms operational</p>
           </div>
           
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Database className="h-8 w-8 text-blue-400" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Database className="h-6 w-6 md:h-8 md:w-8 text-blue-400" />
             </div>
-            <h3 className="text-white font-bold mb-1">2.4M Data Points</h3>
-            <p className="text-gray-400 text-sm">Processed daily</p>
+            <h3 className="text-white font-bold mb-1 text-sm md:text-base">2.4M Data Points</h3>
+            <p className="text-gray-400 text-xs md:text-sm">Processed daily</p>
           </div>
           
           <div className="text-center">
-            <div className="w-16 h-16 bg-purple-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Zap className="h-8 w-8 text-purple-400" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-purple-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Zap className="h-6 w-6 md:h-8 md:w-8 text-purple-400" />
             </div>
-            <h3 className="text-white font-bold mb-1">&lt; 100ms</h3>
-            <p className="text-gray-400 text-sm">Average response time</p>
+            <h3 className="text-white font-bold mb-1 text-sm md:text-base">&lt; 100ms</h3>
+            <p className="text-gray-400 text-xs md:text-sm">Average response time</p>
           </div>
           
           <div className="text-center">
-            <div className="w-16 h-16 bg-cyan-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <Settings className="h-8 w-8 text-cyan-400" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-cyan-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Settings className="h-6 w-6 md:h-8 md:w-8 text-cyan-400" />
             </div>
-            <h3 className="text-white font-bold mb-1">99.7%</h3>
-            <p className="text-gray-400 text-sm">System uptime</p>
+            <h3 className="text-white font-bold mb-1 text-sm md:text-base">99.7%</h3>
+            <p className="text-gray-400 text-xs md:text-sm">System uptime</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <div className="flex space-x-1 bg-black/30 p-1 rounded-xl">
+      <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-1 bg-black/30 p-1 rounded-xl">
         {views.map((view) => {
           const Icon = view.icon;
           return (
@@ -77,15 +77,15 @@ const MLPipeline = () => {
                   : 'text-gray-400 hover:text-white hover:bg-white/10'
               }`}
             >
-              <Icon className="h-5 w-5" />
-              <span className="font-medium">{view.label}</span>
+              <Icon className="h-4 w-4 md:h-5 md:w-5" />
+              <span className="font-medium text-sm md:text-base">{view.label}</span>
             </button>
           );
         })}
       </div>
 
       {/* Content */}
-      <div className="mt-8">
+      <div className="mt-6 md:mt-8">
         {activeView === 'paradigms' && <MLParadigms />}
         {activeView === 'pipeline' && <DataPipeline />}
         {activeView === 'performance' && <ModelPerformance />}

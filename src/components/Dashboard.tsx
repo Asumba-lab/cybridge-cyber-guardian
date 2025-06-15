@@ -28,62 +28,62 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8 px-4 md:px-0">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-white mb-4">
+      <div className="text-center mb-8 md:mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
           Cyber Threat Dashboard
         </h1>
-        <p className="text-gray-400 text-lg">
+        <p className="text-gray-400 text-base md:text-lg">
           Real-time monitoring powered by advanced ML algorithms
         </p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 p-6 rounded-xl backdrop-blur-lg">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+        <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 p-4 md:p-6 rounded-xl backdrop-blur-lg">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-400 text-sm font-medium">Threats Blocked</p>
-              <p className="text-3xl font-bold text-white">{stats.threatsBlocked.toLocaleString()}</p>
+              <p className="text-2xl md:text-3xl font-bold text-white">{stats.threatsBlocked.toLocaleString()}</p>
             </div>
-            <Shield className="h-10 w-10 text-green-400" />
+            <Shield className="h-8 w-8 md:h-10 md:w-10 text-green-400" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 p-6 rounded-xl backdrop-blur-lg">
+        <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 p-4 md:p-6 rounded-xl backdrop-blur-lg">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-blue-400 text-sm font-medium">Active Sessions</p>
-              <p className="text-3xl font-bold text-white">{stats.activeSessions}</p>
+              <p className="text-2xl md:text-3xl font-bold text-white">{stats.activeSessions}</p>
             </div>
-            <Users className="h-10 w-10 text-blue-400" />
+            <Users className="h-8 w-8 md:h-10 md:w-10 text-blue-400" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 p-6 rounded-xl backdrop-blur-lg">
+        <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 p-4 md:p-6 rounded-xl backdrop-blur-lg">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-yellow-400 text-sm font-medium">Risk Score</p>
-              <p className="text-3xl font-bold text-white">{stats.riskScore.toFixed(1)}</p>
+              <p className="text-2xl md:text-3xl font-bold text-white">{stats.riskScore.toFixed(1)}</p>
             </div>
-            <AlertTriangle className="h-10 w-10 text-yellow-400" />
+            <AlertTriangle className="h-8 w-8 md:h-10 md:w-10 text-yellow-400" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 p-6 rounded-xl backdrop-blur-lg">
+        <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 p-4 md:p-6 rounded-xl backdrop-blur-lg">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-purple-400 text-sm font-medium">ML Accuracy</p>
-              <p className="text-3xl font-bold text-white">{stats.mlAccuracy.toFixed(1)}%</p>
+              <p className="text-2xl md:text-3xl font-bold text-white">{stats.mlAccuracy.toFixed(1)}%</p>
             </div>
-            <Activity className="h-10 w-10 text-purple-400" />
+            <Activity className="h-8 w-8 md:h-10 md:w-10 text-purple-400" />
           </div>
         </div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
         {/* Threat Map */}
         <div className="lg:col-span-2">
           <ThreatMap />
@@ -96,7 +96,7 @@ const Dashboard = () => {
       </div>
 
       {/* ML Metrics */}
-      <div className="mt-8">
+      <div className="mt-6 md:mt-8">
         <MLMetrics />
       </div>
     </div>
