@@ -240,6 +240,74 @@ const LearningPath = ({
   // Handler to go back from module content view to the list
   const handleCloseModuleContent = () => setActiveModuleId(null);
 
+  // --- Modules for Learning Path (RESTORED) ---
+  const modules = [
+    {
+      id: 1,
+      title: 'Cybersecurity Fundamentals',
+      description: 'Learn the basics of cybersecurity and threat landscape',
+      progress: 100,
+      status: 'completed',
+      duration: '2 hours',
+      difficulty: 'Beginner'
+    },
+    {
+      id: 2,
+      title: 'Threat Detection & Analysis',
+      description: 'Understand how to identify and analyze cyber threats',
+      progress: 65,
+      status: 'current',
+      duration: '3 hours',
+      difficulty: 'Intermediate'
+    },
+    {
+      id: 3,
+      title: 'Machine Learning in Cybersecurity',
+      description: 'Explore ML applications in threat detection',
+      progress: 0,
+      status: 'locked',
+      duration: '4 hours',
+      difficulty: 'Advanced'
+    },
+    {
+      id: 4,
+      title: 'Incident Response',
+      description: 'Learn how to respond to cybersecurity incidents',
+      progress: 0,
+      status: 'locked',
+      duration: '3 hours',
+      difficulty: 'Intermediate'
+    },
+    {
+      id: 5,
+      title: 'Ethical Hacking',
+      description: 'Understand penetration testing and vulnerability assessment',
+      progress: 0,
+      status: 'locked',
+      duration: '5 hours',
+      difficulty: 'Advanced'
+    }
+  ];
+
+  // --- Helper functions for module UI (RESTORED) ---
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Beginner': return 'bg-green-500/20 text-green-400';
+      case 'Intermediate': return 'bg-yellow-500/20 text-yellow-400';
+      case 'Advanced': return 'bg-red-500/20 text-red-400';
+      default: return 'bg-gray-500/20 text-gray-400';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed': return <CheckCircle className="h-6 w-6 text-green-400" />;
+      case 'current': return <Play className="h-6 w-6 text-cyan-400" />;
+      case 'locked': return <Lock className="h-6 w-6 text-gray-500" />;
+      default: return <Circle className="h-6 w-6 text-gray-500" />;
+    }
+  };
+
   // --- Review view
   if (reviewModuleId !== null && moduleReviews[reviewModuleId]) {
     const review = moduleReviews[reviewModuleId];
