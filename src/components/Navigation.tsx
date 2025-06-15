@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Shield, Brain, Users, Building, Activity, Menu, X } from 'lucide-react';
+import { Shield, Brain, Users, Building, Activity, Menu, X, Globe } from 'lucide-react';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
