@@ -1,10 +1,11 @@
-
 import React, { useState } from 'react';
 import { Users, Trophy, BookOpen, Target, Star, ChevronRight, Notebook } from 'lucide-react';
 import LearningPath from './LearningPath';
 import SkillAssessment from './SkillAssessment';
 import Leaderboard from './Leaderboard';
 import CybersecurityNotes from './CybersecurityNotes';
+
+const WEEKLY_EXERCISES_COUNT = 5;
 
 const YouthPortal = () => {
   const [activeTab, setActiveTab] = useState('learning');
@@ -14,6 +15,39 @@ const YouthPortal = () => {
     streak: 7,
     completedModules: 23
   });
+
+  // --- Weekly Challenge State for Global Access ---
+  // Move these from LearningPath so both it and Leaderboard can share!
+  const [completedExercises, setCompletedExercises] = useState(0);
+  const [challengeIdx, setChallengeIdx] = useState<number | null>(null);
+
+  // Handler to start/resume challenge
+  const handleContinueChallenge = () => {
+    if (completedExercises >= WEEKLY_EXERCISES_COUNT) return;
+    setActiveTab("learning");
+    setChallengeIdx(completedExercises);
+  };
+
+  // Handler for completing an exercise
+  const handleCompleteExercise = () => {
+    setCompletedExercises((prev) => prev + 1);
+    setChallengeIdx((prevIdx) =>
+      prevIdx !== null && prevIdx + 1 < WEEKLY_EXERCISES_COUNT ? prevIdx + 1 : null
+    );
+    if ((challengeIdx !== null ? challengeIdx + 1 : completedExercises + 1) >= WEEKLY_EXERCISES_COUNT) {
+      setChallengeIdx(null);
+    }
+  };
+
+  // Handler for going back in challenge
+  const handleBackChallenge = () => {
+    setChallengeIdx(null);
+  };
+
+  // Handler to restart challenge
+  const handleRestartChallenge = () => {
+    setCompletedExercises(0);
+  };
 
   const tabs = [
     { id: 'learning', label: 'Learning Path', icon: BookOpen },
@@ -91,9 +125,27 @@ const YouthPortal = () => {
 
       {/* Tab Content */}
       <div className="mt-6 md:mt-8">
-        {activeTab === 'learning' && <LearningPath />}
+        {activeTab === 'learning' && (
+          <LearningPath
+            globalChallengeState={{
+              completedExercises,
+              setCompletedExercises,
+              challengeIdx,
+              setChallengeIdx,
+              onContinueChallenge: handleContinueChallenge,
+              onCompleteExercise: handleCompleteExercise,
+              onBackChallenge: handleBackChallenge,
+              onRestartChallenge: handleRestartChallenge,
+            }}
+          />
+        )}
         {activeTab === 'assessment' && <SkillAssessment />}
-        {activeTab === 'leaderboard' && <Leaderboard />}
+        {activeTab === 'leaderboard' && (
+          <Leaderboard
+            onContinueChallenge={handleContinueChallenge}
+            completedExercises={completedExercises}
+          />
+        )}
         {activeTab === 'notes' && <CybersecurityNotes />}
       </div>
     </div>

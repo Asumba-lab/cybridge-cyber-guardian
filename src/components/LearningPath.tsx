@@ -158,13 +158,67 @@ const threatDetectionExercises = [
   },
 ];
 
-const LearningPath = () => {
-  const [currentModule, setCurrentModule] = useState(2);
-  const [reviewModuleId, setReviewModuleId] = useState<number | null>(null);
-  const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
-  // Challenge state
-  const [challengeIdx, setChallengeIdx] = useState<number | null>(null);
-  const [completedExercises, setCompletedExercises] = useState<number>(0);
+const LearningPath = ({
+  globalChallengeState,
+}: {
+  globalChallengeState?: {
+    completedExercises: number;
+    setCompletedExercises: React.Dispatch<React.SetStateAction<number>>;
+    challengeIdx: number | null;
+    setChallengeIdx: React.Dispatch<React.SetStateAction<number | null>>;
+    onContinueChallenge: () => void;
+    onCompleteExercise: () => void;
+    onBackChallenge: () => void;
+    onRestartChallenge: () => void;
+  }
+} = {}) => {
+  // If provided, use props, else fallback to local state.
+  const [localCompletedExercises, setLocalCompletedExercises] = useState(0);
+  const [localChallengeIdx, setLocalChallengeIdx] = useState<number | null>(null);
+
+  const completedExercises = globalChallengeState
+    ? globalChallengeState.completedExercises
+    : localCompletedExercises;
+  const setCompletedExercises = globalChallengeState
+    ? globalChallengeState.setCompletedExercises
+    : setLocalCompletedExercises;
+  const challengeIdx = globalChallengeState
+    ? globalChallengeState.challengeIdx
+    : localChallengeIdx;
+  const setChallengeIdx = globalChallengeState
+    ? globalChallengeState.setChallengeIdx
+    : setLocalChallengeIdx;
+
+  // --- CHALLENGE handlers ---
+  const handleContinueChallenge = globalChallengeState
+    ? globalChallengeState.onContinueChallenge
+    : () => {
+        if (localCompletedExercises >= threatDetectionExercises.length) return;
+        setLocalChallengeIdx(localCompletedExercises);
+      };
+
+  const handleCompleteExercise = globalChallengeState
+    ? globalChallengeState.onCompleteExercise
+    : () => {
+        setLocalCompletedExercises((prev) => prev + 1);
+        setLocalChallengeIdx((prevIdx) =>
+          prevIdx !== null && prevIdx + 1 < threatDetectionExercises.length ? prevIdx + 1 : null
+        );
+        if (
+          (localChallengeIdx !== null ? localChallengeIdx + 1 : localCompletedExercises + 1) >=
+          threatDetectionExercises.length
+        ) {
+          setLocalChallengeIdx(null);
+        }
+      };
+
+  const handleChallengeBack = globalChallengeState
+    ? globalChallengeState.onBackChallenge
+    : () => setLocalChallengeIdx(null);
+
+  const handleRestartChallenge = globalChallengeState
+    ? globalChallengeState.onRestartChallenge
+    : () => setLocalCompletedExercises(0);
 
   const modules = [
     {

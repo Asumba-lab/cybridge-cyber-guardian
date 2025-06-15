@@ -1,8 +1,15 @@
-
 import React from 'react';
 import { Trophy, Medal, Star, TrendingUp } from 'lucide-react';
 
-const Leaderboard = () => {
+interface LeaderboardProps {
+  onContinueChallenge?: () => void;
+  completedExercises?: number;
+}
+
+const Leaderboard: React.FC<LeaderboardProps> = ({
+  onContinueChallenge,
+  completedExercises = 0,
+}) => {
   const leaderboardData = [
     { rank: 1, name: 'Alex Chen', xp: 15847, level: 28, badge: 'Expert', streak: 45 },
     { rank: 2, name: 'Sarah Kumar', xp: 14532, level: 26, badge: 'Advanced', streak: 32 },
@@ -32,6 +39,11 @@ const Leaderboard = () => {
       default: return 'bg-gray-500/20 text-gray-400';
     }
   };
+
+  // Weekly challenge variables
+  const weeklyTotal = 5;
+  const weeklyComplete = Math.min(completedExercises, weeklyTotal);
+  const completed = weeklyComplete >= weeklyTotal;
 
   return (
     <div className="space-y-6">
@@ -142,12 +154,18 @@ const Leaderboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-32 bg-gray-700 rounded-full h-2">
-              <div className="bg-green-500 h-2 rounded-full" style={{ width: '60%' }} />
+              <div className="bg-green-500 h-2 rounded-full" style={{ width: `${(weeklyComplete / weeklyTotal) * 100}%` }} />
             </div>
-            <span className="text-green-400 text-sm font-medium">3/5 Complete</span>
+            <span className="text-green-400 text-sm font-medium">
+              {weeklyComplete}/{weeklyTotal} Complete
+            </span>
           </div>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all duration-200">
-            Continue Challenge
+          <button
+            className={`bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all duration-200 ${completed ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={!completed && onContinueChallenge ? onContinueChallenge : undefined}
+            disabled={completed}
+          >
+            {completed ? "Challenge Complete" : "Continue Challenge"}
           </button>
         </div>
       </div>
