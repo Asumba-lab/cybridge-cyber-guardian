@@ -90,11 +90,81 @@ const moduleDetails = {
   // ...you can add further modules similarly
 };
 
+const threatDetectionExercises = [
+  {
+    title: "Exercise 1: Suspicious Login Alert?",
+    scenario: (
+      <>
+        <p className="mb-2">You see a login attempt to your account from "Denmark" at 3:13am, and you live in California. Your devices at home are offline at that time.</p>
+        <ul className="list-disc pl-5 text-purple-200 mb-2">
+          <li>Should you ignore it or investigate further?</li>
+          <li>What steps should you take?</li>
+        </ul>
+      </>
+    ),
+    answer: "You should investigate further. It could be an unauthorized login. Check your account activity, change your password, and enable 2FA.",
+  },
+  {
+    title: "Exercise 2: Strange File Download",
+    scenario: (
+      <>
+        <p className="mb-2">Your system detects a download of a program called <span className="text-cyan-300">free_game_crack.exe</span> from an unknown website.</p>
+        <ul className="list-disc pl-5 text-purple-200 mb-2">
+          <li>Is this likely safe or a threat?</li>
+          <li>What red flags do you notice?</li>
+        </ul>
+      </>
+    ),
+    answer: "This is likely a threat. Downloading executable files from unknown sources is risky and could lead to malware.",
+  },
+  {
+    title: "Exercise 3: Phishy Email?",
+    scenario: (
+      <>
+        <p className="mb-2">You get an email saying: "Your account will be locked! Click <span className='text-cyan-200 underline'>here</span> to verify."</p>
+        <ul className="list-disc pl-5 text-purple-200 mb-2">
+          <li>How can you check if this is real?</li>
+          <li>What danger signs do you see?</li>
+        </ul>
+      </>
+    ),
+    answer: "Check the sender’s address and don’t click the link. The urgent threat and suspicious link are red flags—likely phishing.",
+  },
+  {
+    title: "Exercise 4: Rapid Data Transfer",
+    scenario: (
+      <>
+        <p className="mb-2">You notice your computer sending out large amounts of data late at night, though you’re not using it.</p>
+        <ul className="list-disc pl-5 text-purple-200 mb-2">
+          <li>What might be happening?</li>
+          <li>Is it normal, or a cause for concern?</li>
+        </ul>
+      </>
+    ),
+    answer: "This could be data exfiltration by malware. Disconnect from the internet and run a full antivirus scan.",
+  },
+  {
+    title: "Exercise 5: Mystery USB Drive",
+    scenario: (
+      <>
+        <p className="mb-2">You find a USB drive in your school’s hallway labeled ‘Top Secret Grades’.</p>
+        <ul className="list-disc pl-5 text-purple-200 mb-2">
+          <li>Should you plug it into your computer?</li>
+          <li>What would you do instead?</li>
+        </ul>
+      </>
+    ),
+    answer: "Do NOT plug it in! It could contain malware. Give it to a teacher or administrator.",
+  },
+];
+
 const LearningPath = () => {
   const [currentModule, setCurrentModule] = useState(2);
   const [reviewModuleId, setReviewModuleId] = useState<number | null>(null);
-  // New state for showing structured learning content for an active module
   const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
+  // Challenge state
+  const [challengeIdx, setChallengeIdx] = useState<number | null>(null);
+  const [completedExercises, setCompletedExercises] = useState<number>(0);
 
   const modules = [
     {
@@ -178,6 +248,35 @@ const LearningPath = () => {
   // Handler to go back from module content view to the list
   const handleCloseModuleContent = () => setActiveModuleId(null);
 
+  // Handler: Go to next exercise or finish challenge
+  const handleContinueChallenge = () => {
+    if (completedExercises < threatDetectionExercises.length) {
+      setChallengeIdx(completedExercises);
+      setActiveModuleId(null); // Remove other views
+      setReviewModuleId(null);
+    }
+  };
+
+  // Handler: complete current exercise
+  const handleCompleteExercise = () => {
+    setCompletedExercises((prev) => prev + 1);
+    setChallengeIdx((prevIdx) =>
+      prevIdx !== null && prevIdx + 1 < threatDetectionExercises.length ? prevIdx + 1 : null
+    );
+    // If last, show congrats message, else go to next
+    if (
+      (challengeIdx !== null ? challengeIdx + 1 : completedExercises + 1) >=
+      threatDetectionExercises.length
+    ) {
+      setChallengeIdx(null);
+    }
+  };
+
+  // Handler: Back to challenge list
+  const handleChallengeBack = () => {
+    setChallengeIdx(null);
+  };
+
   // Render Review View if reviewModuleId is set
   if (reviewModuleId !== null && moduleReviews[reviewModuleId]) {
     const review = moduleReviews[reviewModuleId];
@@ -241,6 +340,57 @@ const LearningPath = () => {
             <span className="font-medium text-purple-300">Tip:</span>
             <span className="text-gray-200 ml-2">{detail.tip}</span>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Challenge Exercise View ---
+  if (challengeIdx !== null && challengeIdx < threatDetectionExercises.length) {
+    const ex = threatDetectionExercises[challengeIdx];
+    return (
+      <div className="relative animate-fade-in">
+        <button
+          onClick={handleChallengeBack}
+          className="mb-4 inline-flex items-center text-cyan-400 hover:text-purple-400 font-medium transition-colors"
+        >
+          &larr; Back to Challenge
+        </button>
+        <div className="bg-black/30 backdrop-blur-lg border border-white/10 p-8 rounded-xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-cyan-300 mb-4">{ex.title}</h2>
+          <div className="mb-4">{ex.scenario}</div>
+          <details className="mb-4 bg-cyan-900/20 p-3 rounded-lg border border-cyan-500/30 text-cyan-100">
+            <summary className="cursor-pointer font-medium pb-1">Show suggested answer</summary>
+            <div>{ex.answer}</div>
+          </details>
+          <button
+            className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200"
+            onClick={handleCompleteExercise}
+          >
+            {challengeIdx + 1 === threatDetectionExercises.length ? "Finish Challenge" : "Next Exercise"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Show congrats message after finishing challenge ---
+  if (completedExercises >= threatDetectionExercises.length && challengeIdx === null) {
+    return (
+      <div className="relative animate-fade-in">
+        <div className="bg-green-900/30 backdrop-blur-lg border border-green-500/20 p-8 rounded-xl text-center">
+          <h2 className="text-3xl font-bold text-green-300 mb-2">🎉 Congratulations!</h2>
+          <p className="text-lg text-gray-100 mb-4">
+            You’ve completed all threat detection exercises and earned <span className="text-yellow-300 font-semibold">bonus XP!</span>
+            <br />
+            Keep practicing to climb the leaderboard.
+          </p>
+          <button
+            className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200"
+            onClick={() => setCompletedExercises(0)}
+          >
+            Restart Challenge
+          </button>
         </div>
       </div>
     );
@@ -367,6 +517,36 @@ const LearningPath = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Weekly Challenge */}
+      <div className="bg-gradient-to-r from-green-500/20 to-cyan-500/20 border border-green-500/30 p-6 rounded-xl">
+        <h3 className="text-xl font-bold text-white mb-2">🎯 Weekly Challenge</h3>
+        <p className="text-gray-300 mb-4">
+          Complete <span className="font-bold">{threatDetectionExercises.length}</span> threat detection exercises to earn bonus XP and climb the leaderboard!
+        </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-32 bg-gray-700 rounded-full h-2">
+              <div
+                className="bg-green-500 h-2 rounded-full transition-all duration-200"
+                style={{ width: `${(completedExercises / threatDetectionExercises.length) * 100}%` }}
+              />
+            </div>
+            <span className="text-green-400 text-sm font-medium">
+              {Math.min(completedExercises, threatDetectionExercises.length)}/{threatDetectionExercises.length} Complete
+            </span>
+          </div>
+          <button
+            className={`bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all duration-200 ${
+              completedExercises >= threatDetectionExercises.length ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={handleContinueChallenge}
+            disabled={completedExercises >= threatDetectionExercises.length}
+          >
+            {completedExercises >= threatDetectionExercises.length ? "Challenge Complete" : "Continue Challenge"}
+          </button>
+        </div>
       </div>
     </div>
   );
