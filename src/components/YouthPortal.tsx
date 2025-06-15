@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Users, Trophy, BookOpen, Target, Star, ChevronRight } from 'lucide-react';
+import { Users, Trophy, BookOpen, Target, Star, ChevronRight, Notebook } from 'lucide-react';
 import LearningPath from './LearningPath';
 import SkillAssessment from './SkillAssessment';
 import Leaderboard from './Leaderboard';
+import CybersecurityNotes from './CybersecurityNotes';
 
 const YouthPortal = () => {
   const [activeTab, setActiveTab] = useState('learning');
@@ -17,7 +18,8 @@ const YouthPortal = () => {
   const tabs = [
     { id: 'learning', label: 'Learning Path', icon: BookOpen },
     { id: 'assessment', label: 'Skill Assessment', icon: Target },
-    { id: 'leaderboard', label: 'Leaderboard', icon: Trophy }
+    { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+    { id: 'notes', label: 'Notes Library', icon: Notebook }
   ];
 
   return (
@@ -92,6 +94,7 @@ const YouthPortal = () => {
         {activeTab === 'learning' && <LearningPath />}
         {activeTab === 'assessment' && <SkillAssessment />}
         {activeTab === 'leaderboard' && <Leaderboard />}
+        {activeTab === 'notes' && <CybersecurityNotes />}
       </div>
     </div>
   );
