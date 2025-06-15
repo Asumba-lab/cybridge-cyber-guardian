@@ -51,7 +51,6 @@ Visit the [About Page](/about) or use the "About" link in the navigation bar for
 
 ## Live Demo
 
-[https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70](https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70)
 
 ## Getting Started
 
@@ -65,7 +64,7 @@ Visit the [About Page](/about) or use the "About" link in the navigation bar for
    `npm run dev`
 
 4. **View the app**  
-   Open [http://localhost:5173](http://localhost:5173) (or the specialized Lovable link above).
+   Open https://cybridge-cyber-guardian.lovable.app
 
 ## Customization & Contribution
 
