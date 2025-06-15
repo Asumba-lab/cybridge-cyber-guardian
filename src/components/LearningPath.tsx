@@ -121,7 +121,7 @@ const threatDetectionExercises = [
     title: "Exercise 3: Phishy Email?",
     scenario: (
       <>
-        <p className="mb-2">You get an email saying: "Your account will be locked! Click <span className='text-cyan-200 underline'>here</span> to verify."</p>
+        <p className="mb-2">You get an email saying: \"Your account will be locked! Click <span className='text-cyan-200 underline'>here</span> to verify.\"</p>
         <ul className="list-disc pl-5 text-purple-200 mb-2">
           <li>How can you check if this is real?</li>
           <li>What danger signs do you see?</li>
@@ -250,11 +250,11 @@ const LearningPath = () => {
 
   // Handler: Go to next exercise or finish challenge
   const handleContinueChallenge = () => {
-    if (completedExercises < threatDetectionExercises.length) {
-      setChallengeIdx(completedExercises);
-      setActiveModuleId(null); // Remove other views
-      setReviewModuleId(null);
-    }
+    // If completed all, don't do anything
+    if (completedExercises >= threatDetectionExercises.length) return;
+    setChallengeIdx(completedExercises);
+    setActiveModuleId(null); // Hide other views
+    setReviewModuleId(null);
   };
 
   // Handler: complete current exercise
