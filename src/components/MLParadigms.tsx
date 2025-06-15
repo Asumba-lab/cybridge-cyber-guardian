@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Brain, Target, Eye, Puzzle, Gamepad2, Play, Pause } from 'lucide-react';
 
@@ -238,7 +237,7 @@ const MLParadigms = () => {
                 <div className="grid grid-cols-2 gap-3">
                   {Object.entries(current.performance).map(([metric, value]) => (
                     <div key={metric} className="text-center">
-                      <div className="text-base md:text-lg font-bold text-white">{value}%</div>
+                      <div className="text-base md:text-lg font-bold text-white">{String(value)}%</div>
                       <div className="text-xs text-white/60 capitalize">
                         {metric.replace(/([A-Z])/g, ' $1').trim()}
                       </div>
