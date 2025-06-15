@@ -56,7 +56,7 @@ Visit the [About Page](/about) or use the "About" link in the navigation bar for
 ## Getting Started
 
 1. **Clone this repo**  
-   `git clone <YOUR_GIT_URL>`
+   `git clone <https://github.com/Asumba-lab/cybridge-cyber-guardian>`
 
 2. **Install dependencies**  
    `npm install`
