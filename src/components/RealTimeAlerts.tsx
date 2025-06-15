@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Bell, Shield, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import AllAlertsDialog from './AllAlertsDialog';
 
 const RealTimeAlerts = () => {
   const [alerts, setAlerts] = useState([
@@ -29,6 +29,7 @@ const RealTimeAlerts = () => {
       severity: 'medium'
     }
   ]);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -106,10 +107,19 @@ const RealTimeAlerts = () => {
       </div>
 
       <div className="mt-4 text-center">
-        <button className="text-cyan-400 hover:text-cyan-300 text-sm font-medium">
+        <button
+          className="text-cyan-400 hover:text-cyan-300 text-sm font-medium"
+          onClick={() => setDialogOpen(true)}
+        >
           View All Alerts
         </button>
       </div>
+
+      <AllAlertsDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        alerts={alerts}
+      />
     </div>
   );
 };
