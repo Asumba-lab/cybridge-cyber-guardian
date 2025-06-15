@@ -1,12 +1,13 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
 import YouthPortal from '../components/YouthPortal';
 import SMEAnalytics from '../components/SMEAnalytics';
 import MLPipeline from '../components/MLPipeline';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
+import About from './About';
 
 const Index = () => {
   return (
@@ -19,6 +20,7 @@ const Index = () => {
           <Route path="/youth" element={<YouthPortal />} />
           <Route path="/sme" element={<SMEAnalytics />} />
           <Route path="/ml-pipeline" element={<MLPipeline />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </div>
