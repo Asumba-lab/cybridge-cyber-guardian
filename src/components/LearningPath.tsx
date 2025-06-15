@@ -2,9 +2,35 @@
 import React, { useState } from 'react';
 import { CheckCircle, Circle, Lock, Play, ChevronRight } from 'lucide-react';
 
+const moduleReviews = {
+  1: {
+    title: 'Cybersecurity Fundamentals - Review',
+    summary: "You have completed the Cybersecurity Fundamentals module! Here’s a summary of what you’ve learned:",
+    keyPoints: [
+      "Understand what cybersecurity means and why it’s important.",
+      "Familiarity with key threat landscapes.",
+      "Basic practices for personal cyber hygiene.",
+    ],
+    recommendations: "Proceed to the next module or revisit any key concepts if needed.",
+  },
+  // Add review stubs for other modules
+  2: {
+    title: 'Threat Detection & Analysis - Review',
+    summary: "This module helped you develop foundational skills in identifying and analyzing cyber threats.",
+    keyPoints: [
+      "Common patterns of cyber attacks.",
+      "Techniques for spotting suspicious behaviors.",
+      "Tools used for threat analysis.",
+    ],
+    recommendations: "Continue practical exercises and case studies to strengthen your skills.",
+  }
+  // More reviews can be added here for other modules if desired
+};
+
 const LearningPath = () => {
   const [currentModule, setCurrentModule] = useState(2);
-  
+  const [reviewModuleId, setReviewModuleId] = useState<number | null>(null);
+
   const modules = [
     {
       id: 1,
@@ -71,6 +97,46 @@ const LearningPath = () => {
     }
   };
 
+  // Handler for the Review button
+  const handleReview = (moduleId: number) => {
+    setReviewModuleId(moduleId);
+  };
+
+  // Handler to go back from review to the list
+  const handleBack = () => setReviewModuleId(null);
+
+  // Render Review View if reviewModuleId is set
+  if (reviewModuleId !== null && moduleReviews[reviewModuleId]) {
+    const review = moduleReviews[reviewModuleId];
+    return (
+      <div className="relative animate-fade-in">
+        <button
+          onClick={handleBack}
+          className="mb-4 inline-flex items-center text-cyan-400 hover:text-purple-400 font-medium transition-colors"
+        >
+          &larr; Back to Modules
+        </button>
+        <div className="bg-black/30 backdrop-blur-lg border border-white/10 p-8 rounded-xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">{review.title}</h2>
+          <p className="text-gray-300 mb-4">{review.summary}</p>
+          <div className="mb-6">
+            <h3 className="font-semibold text-lg text-cyan-400 mb-2">Key Points Covered</h3>
+            <ul className="list-disc ml-6 text-gray-200 space-y-1">
+              {review.keyPoints.map((point, idx) => (
+                <li key={idx}>{point}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 p-4 rounded-xl">
+            <span className="font-medium text-purple-300">AI Recommendation:</span>
+            <div className="text-gray-200 mt-1">{review.recommendations}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default: show learning modules
   return (
     <div className="space-y-6">
       {/* AI Recommendation */}
@@ -136,7 +202,10 @@ const LearningPath = () => {
                   </button>
                 )}
                 {module.status === 'completed' && (
-                  <button className="border border-green-500 text-green-400 px-4 py-2 rounded-lg font-medium hover:bg-green-500 hover:text-white transition-all duration-200">
+                  <button
+                    className="border border-green-500 text-green-400 px-4 py-2 rounded-lg font-medium hover:bg-green-500 hover:text-white transition-all duration-200"
+                    onClick={() => handleReview(module.id)}
+                  >
                     Review
                   </button>
                 )}
