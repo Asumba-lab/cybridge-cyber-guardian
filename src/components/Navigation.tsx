@@ -13,6 +13,7 @@ const Navigation = () => {
     { path: '/youth', label: 'Youth Portal', icon: Users },
     { path: '/sme', label: 'SME Analytics', icon: Building },
     { path: '/ml-pipeline', label: 'ML Pipeline', icon: Brain },
+    { path: '/presentation', label: 'Presentation', icon: Globe },
     { path: '/about', label: 'About', icon: Shield },
   ];
 

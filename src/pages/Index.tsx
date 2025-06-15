@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
@@ -8,6 +7,7 @@ import MLPipeline from '../components/MLPipeline';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import About from './About';
+import Presentation from './Presentation';
 
 const Index = () => {
   return (
@@ -21,6 +21,7 @@ const Index = () => {
           <Route path="/sme" element={<SMEAnalytics />} />
           <Route path="/ml-pipeline" element={<MLPipeline />} />
           <Route path="/about" element={<About />} />
+          <Route path="/presentation" element={<Presentation />} />
         </Routes>
       </div>
     </div>
