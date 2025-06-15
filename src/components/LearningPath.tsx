@@ -224,6 +224,44 @@ const LearningPath = () => {
   // Default: show learning modules
   return (
     <div className="space-y-6">
+      {/* Youth-Friendly Cybersecurity Overview */}
+      <div className="bg-gradient-to-r from-cyan-500/25 to-purple-500/25 p-6 md:p-8 rounded-2xl border border-cyan-500/30 mb-2 animate-fade-in">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-2">
+          <span role="img" aria-label="shield">🛡️</span>
+          What is Cybersecurity? <span className="text-base font-normal tracking-normal text-purple-200 ml-2">— For Youth</span>
+        </h2>
+        <p className="text-gray-200 mb-3 text-[1.08rem]">
+          <b>Cybersecurity</b> is how we protect computers, phones, and our online lives from people who want to steal, destroy, or mess with our personal information.
+        </p>
+        <ul className="list-disc pl-6 mb-4 space-y-2 text-sky-100">
+          <li>
+            <b>Why is it important?</b> <span className="text-gray-300">Because our world is connected—photos, chats, homework, and even games can be targeted if we’re not careful!</span>
+          </li>
+          <li>
+            <b>The threat landscape is always changing:</b> <span className="text-gray-300">Hackers use new tricks all the time—phishing emails, fake websites, sneaky apps, and more.</span>
+          </li>
+          <li>
+            <b>You are your own first defense!</b> <span className="text-gray-300">Simple steps make a BIG difference!</span>
+          </li>
+        </ul>
+        <div className="bg-black/20 rounded-xl p-4 border border-white/10">
+          <h3 className="font-bold text-cyan-300 mb-1 flex items-center gap-1 text-lg"><span role="img" aria-label="checklist">✅</span> <span>Top Cyber Hygiene Tips:</span></h3>
+          <ul className="list-decimal pl-6 space-y-1 text-purple-100">
+            <li>Use strong, unique passwords (and don’t share them—even with friends!).</li>
+            <li>Turn on <b>two-factor authentication (2FA)</b> wherever possible.</li>
+            <li>Don’t click links or download files from strangers or suspicious messages.</li>
+            <li>Keep your apps and devices updated—it helps block new threats.</li>
+            <li>If something feels off, ask an adult or teacher before acting.</li>
+          </ul>
+        </div>
+        <div className="mt-3 text-green-200 flex items-center gap-2">
+          <span role="img" aria-label="sparkles">✨</span>
+          <span>
+            Remember: Good cyber habits help you, your family, and your community stay safe while having fun online!
+          </span>
+        </div>
+      </div>
+
       {/* AI Recommendation */}
       <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 p-6 rounded-xl">
         <h3 className="text-xl font-bold text-white mb-2">🤖 AI Recommendation</h3>
