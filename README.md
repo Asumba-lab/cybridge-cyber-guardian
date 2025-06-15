@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
 
-## Project info
+# Cybridge AI: Next-Gen Cybersecurity Platform
 
-**URL**: https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70
+## Overview
 
-## How can I edit this code?
+**Cybridge AI** is an advanced, full-stack cybersecurity platform built to secure small and medium enterprises (SMEs), empower youth through cyber education, and showcase cutting-edge machine learning (ML) integration, all aligned with UN SDG #9 – Industry, Innovation, and Infrastructure.
 
-There are several ways of editing your application.
+## Key Features
 
-**Use Lovable**
+- **Real-Time Threat Detection Dashboard:**  
+  Instantly visualize and monitor potential cyber threats using live ML-driven analytics, interactive dashboards, and a global threat map.
+- **Youth Training Portal:**  
+  A gamified and adaptive learning platform for young users, leveraging reinforcement and self-supervised learning for skill assessment, custom learning paths, and competitive leaderboards.
+- **SME Analytics:**  
+  Comprehensive risk scoring, vulnerability assessment, and compliance tracking powered by ML models.
+- **ML Pipeline Visualization:**  
+  See all 5 learning paradigms (Supervised, Unsupervised, Semi-Supervised, Self-Supervised, and Reinforcement Learning) in action, with context-aware performance metrics.
+- **World-Class Responsive UI:**  
+  Fully responsive design works beautifully on mobile phones and laptops, with an intuitive navigation experience.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70) and start prompting.
+## Machine Learning Paradigms
 
-Changes made via Lovable will be committed automatically to this repo.
+| Paradigm             | Use Case                                           |
+|----------------------|---------------------------------------------------|
+| Supervised           | Classifying phishing/malware threats in real time |
+| Unsupervised         | Anomaly detection in network/user activity        |
+| Semi-Supervised      | Skill assessments, improving predictions with limited labels |
+| Self-Supervised      | User/device behavior modeling                     |
+| Reinforcement        | Adaptive SME protection, youth learning guidance  |
 
-**Use your preferred IDE**
+## Technical Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui, Lucide Icons
+- **Data/State:** @tanstack/react-query
+- **Visualization:** Recharts, CSS animations, live data simulation
+- **Routing:** react-router-dom
+- **(Integration Ready) Backend:** Python FastAPI, PostgreSQL/MongoDB (for future ML & API hosting)
+- **Mobile & Desktop Support:** All layouts are built for full responsiveness, ensuring usability across all common device sizes.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Use Cases
 
-Follow these steps:
+- **SMEs:** Predict, visualize, and receive alerts about real-time cyber threats.  
+- **Youth/Learners:** Follow adaptive learning paths tailored by AI, enhance your skills, and track progress with competitive gamification.
+- **Admins:** Monitor ML pipeline health, add or retrain ML models, and oversee system performance at a glance.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Live Demo
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+[https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70](https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70)
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Getting Started
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+1. **Clone this repo**  
+   `git clone <YOUR_GIT_URL>`
 
-**Edit a file directly in GitHub**
+2. **Install dependencies**  
+   `npm install`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. **Run locally**  
+   `npm run dev`
 
-**Use GitHub Codespaces**
+4. **View the app**  
+   Open [http://localhost:5173](http://localhost:5173) (or the specialized Lovable link above).
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Customization & Contribution
 
-## What technologies are used for this project?
+- The platform is fully extensible:  
+  Add new ML services, connect your own data pipeline, or plug into threat intelligence feeds with minimal effort.
+- PRs and community collaboration are welcome! See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-This project is built with:
+## License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+MIT License
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/9486150c-12a1-4bb4-8442-00efbeabff70) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Made with ❤️ for next-generation cyber defense and education.
