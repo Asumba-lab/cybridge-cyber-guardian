@@ -1,11 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from '../components/Dashboard';
+import YouthPortal from '../components/YouthPortal';
+import SMEAnalytics from '../components/SMEAnalytics';
+import MLPipeline from '../components/MLPipeline';
+import Navigation from '../components/Navigation';
+import HeroSection from '../components/HeroSection';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
+        <Routes>
+          <Route path="/" element={<HeroSection />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/youth" element={<YouthPortal />} />
+          <Route path="/sme" element={<SMEAnalytics />} />
+          <Route path="/ml-pipeline" element={<MLPipeline />} />
+        </Routes>
       </div>
     </div>
   );
