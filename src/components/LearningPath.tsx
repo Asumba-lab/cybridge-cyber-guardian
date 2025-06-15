@@ -176,6 +176,10 @@ const LearningPath = ({
   const [localCompletedExercises, setLocalCompletedExercises] = useState(0);
   const [localChallengeIdx, setLocalChallengeIdx] = useState<number | null>(null);
 
+  // --- NEW: Module and Review State ---
+  const [reviewModuleId, setReviewModuleId] = useState<number | null>(null);
+  const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
+
   const completedExercises = globalChallengeState
     ? globalChallengeState.completedExercises
     : localCompletedExercises;
@@ -189,7 +193,7 @@ const LearningPath = ({
     ? globalChallengeState.setChallengeIdx
     : setLocalChallengeIdx;
 
-  // --- CHALLENGE handlers ---
+  // Use these handlers throughout, DO NOT REDECLARE ↓↓↓
   const handleContinueChallenge = globalChallengeState
     ? globalChallengeState.onContinueChallenge
     : () => {
@@ -220,72 +224,6 @@ const LearningPath = ({
     ? globalChallengeState.onRestartChallenge
     : () => setLocalCompletedExercises(0);
 
-  const modules = [
-    {
-      id: 1,
-      title: 'Cybersecurity Fundamentals',
-      description: 'Learn the basics of cybersecurity and threat landscape',
-      progress: 100,
-      status: 'completed',
-      duration: '2 hours',
-      difficulty: 'Beginner'
-    },
-    {
-      id: 2,
-      title: 'Threat Detection & Analysis',
-      description: 'Understand how to identify and analyze cyber threats',
-      progress: 65,
-      status: 'current',
-      duration: '3 hours',
-      difficulty: 'Intermediate'
-    },
-    {
-      id: 3,
-      title: 'Machine Learning in Cybersecurity',
-      description: 'Explore ML applications in threat detection',
-      progress: 0,
-      status: 'locked',
-      duration: '4 hours',
-      difficulty: 'Advanced'
-    },
-    {
-      id: 4,
-      title: 'Incident Response',
-      description: 'Learn how to respond to cybersecurity incidents',
-      progress: 0,
-      status: 'locked',
-      duration: '3 hours',
-      difficulty: 'Intermediate'
-    },
-    {
-      id: 5,
-      title: 'Ethical Hacking',
-      description: 'Understand penetration testing and vulnerability assessment',
-      progress: 0,
-      status: 'locked',
-      duration: '5 hours',
-      difficulty: 'Advanced'
-    }
-  ];
-
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case 'Beginner': return 'bg-green-500/20 text-green-400';
-      case 'Intermediate': return 'bg-yellow-500/20 text-yellow-400';
-      case 'Advanced': return 'bg-red-500/20 text-red-400';
-      default: return 'bg-gray-500/20 text-gray-400';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'completed': return <CheckCircle className="h-6 w-6 text-green-400" />;
-      case 'current': return <Play className="h-6 w-6 text-cyan-400" />;
-      case 'locked': return <Lock className="h-6 w-6 text-gray-500" />;
-      default: return <Circle className="h-6 w-6 text-gray-500" />;
-    }
-  };
-
   // Handler for the Review button
   const handleReview = (moduleId: number) => {
     setReviewModuleId(moduleId);
@@ -302,36 +240,7 @@ const LearningPath = ({
   // Handler to go back from module content view to the list
   const handleCloseModuleContent = () => setActiveModuleId(null);
 
-  // Handler: Go to next exercise or finish challenge
-  const handleContinueChallenge = () => {
-    // If completed all, don't do anything
-    if (completedExercises >= threatDetectionExercises.length) return;
-    setChallengeIdx(completedExercises);
-    setActiveModuleId(null); // Hide other views
-    setReviewModuleId(null);
-  };
-
-  // Handler: complete current exercise
-  const handleCompleteExercise = () => {
-    setCompletedExercises((prev) => prev + 1);
-    setChallengeIdx((prevIdx) =>
-      prevIdx !== null && prevIdx + 1 < threatDetectionExercises.length ? prevIdx + 1 : null
-    );
-    // If last, show congrats message, else go to next
-    if (
-      (challengeIdx !== null ? challengeIdx + 1 : completedExercises + 1) >=
-      threatDetectionExercises.length
-    ) {
-      setChallengeIdx(null);
-    }
-  };
-
-  // Handler: Back to challenge list
-  const handleChallengeBack = () => {
-    setChallengeIdx(null);
-  };
-
-  // Render Review View if reviewModuleId is set
+  // --- Review view
   if (reviewModuleId !== null && moduleReviews[reviewModuleId]) {
     const review = moduleReviews[reviewModuleId];
     return (
@@ -362,7 +271,7 @@ const LearningPath = ({
     );
   }
 
-  // Render module structured learning content if activeModuleId is set
+  // --- Module structured learning content view
   if (activeModuleId !== null && moduleDetails[activeModuleId]) {
     const detail = moduleDetails[activeModuleId];
     return (
@@ -399,7 +308,7 @@ const LearningPath = ({
     );
   }
 
-  // --- Challenge Exercise View ---
+  // --- Challenge Exercise View
   if (challengeIdx !== null && challengeIdx < threatDetectionExercises.length) {
     const ex = threatDetectionExercises[challengeIdx];
     return (
@@ -441,7 +350,7 @@ const LearningPath = ({
           </p>
           <button
             className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200"
-            onClick={() => setCompletedExercises(0)}
+            onClick={handleRestartChallenge}
           >
             Restart Challenge
           </button>
