@@ -49,7 +49,7 @@ const MLPipeline = () => {
             <div className="w-16 h-16 bg-purple-500/30 rounded-full flex items-center justify-center mx-auto mb-3">
               <Zap className="h-8 w-8 text-purple-400" />
             </div>
-            <h3 className="text-white font-bold mb-1">< 100ms</h3>
+            <h3 className="text-white font-bold mb-1">&lt; 100ms</h3>
             <p className="text-gray-400 text-sm">Average response time</p>
           </div>
           
