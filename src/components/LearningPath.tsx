@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CheckCircle, Circle, Lock, Play, ChevronRight } from 'lucide-react';
 
@@ -27,9 +26,53 @@ const moduleReviews = {
   // More reviews can be added here for other modules if desired
 };
 
+const moduleDetails = {
+  1: {
+    title: 'Cybersecurity Fundamentals',
+    intro: "Welcome to Cybersecurity Fundamentals! Start your journey by understanding the core principles that keep information safe.",
+    lessons: [
+      {
+        name: "What is Cybersecurity?",
+        content: "Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks. These attacks aim to access, change, or destroy sensitive information.",
+      },
+      {
+        name: "Types of Threats",
+        content: "Common threats include malware, phishing, man-in-the-middle attacks, denial-of-service, and ransomware.",
+      },
+      {
+        name: "Best Practices",
+        content: "Use strong passwords, enable two-factor authentication, and keep your software up to date.",
+      },
+    ],
+    tip: "Finish the concepts and do the quiz to master this module!"
+  },
+  2: {
+    title: 'Threat Detection & Analysis',
+    intro: "Dive into detecting and analyzing the many threats faced online every day.",
+    lessons: [
+      {
+        name: "Identifying Suspicious Activity",
+        content: "Learn to recognize irregular user behaviors and patterns in network traffic.",
+      },
+      {
+        name: "Threat Analysis Tools",
+        content: "Familiarize yourself with basic tools such as antivirus programs, log analyzers, and packet sniffers.",
+      },
+      {
+        name: "Practical Exercise",
+        content: "Review a series of suspicious email examples and determine if they are phishing attempts.",
+      },
+    ],
+    tip: "Hands-on practice is key! Try spotting threats in real or simulated environments."
+  },
+  // ...you can add further modules similarly
+};
+
 const LearningPath = () => {
   const [currentModule, setCurrentModule] = useState(2);
   const [reviewModuleId, setReviewModuleId] = useState<number | null>(null);
+  // New state for showing structured learning content for an active module
+  const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
 
   const modules = [
     {
@@ -105,6 +148,14 @@ const LearningPath = () => {
   // Handler to go back from review to the list
   const handleBack = () => setReviewModuleId(null);
 
+  // Handler for Continue button: open structured module content
+  const handleContinue = (moduleId: number) => {
+    setActiveModuleId(moduleId);
+  };
+
+  // Handler to go back from module content view to the list
+  const handleCloseModuleContent = () => setActiveModuleId(null);
+
   // Render Review View if reviewModuleId is set
   if (reviewModuleId !== null && moduleReviews[reviewModuleId]) {
     const review = moduleReviews[reviewModuleId];
@@ -130,6 +181,40 @@ const LearningPath = () => {
           <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 p-4 rounded-xl">
             <span className="font-medium text-purple-300">AI Recommendation:</span>
             <div className="text-gray-200 mt-1">{review.recommendations}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render module structured learning content if activeModuleId is set
+  if (activeModuleId !== null && moduleDetails[activeModuleId]) {
+    const detail = moduleDetails[activeModuleId];
+    return (
+      <div className="relative animate-fade-in">
+        <button
+          onClick={handleCloseModuleContent}
+          className="mb-4 inline-flex items-center text-cyan-400 hover:text-purple-400 font-medium transition-colors"
+        >
+          &larr; Back to Modules
+        </button>
+        <div className="bg-black/30 backdrop-blur-lg border border-white/10 p-8 rounded-xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">{detail.title}</h2>
+          <p className="text-gray-300 mb-4">{detail.intro}</p>
+          <div className="space-y-4 mb-6">
+            <h3 className="font-semibold text-lg text-cyan-400 mb-2">Lessons</h3>
+            <ul className="space-y-3">
+              {detail.lessons.map((lesson, idx) => (
+                <li key={idx} className="p-4 bg-cyan-700/10 rounded-lg border border-cyan-500/20">
+                  <div className="font-medium text-white">{lesson.name}</div>
+                  <div className="text-gray-200">{lesson.content}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 p-4 rounded-xl">
+            <span className="font-medium text-purple-300">Tip:</span>
+            <span className="text-gray-200 ml-2">{detail.tip}</span>
           </div>
         </div>
       </div>
@@ -196,7 +281,10 @@ const LearningPath = () => {
               
               <div className="flex-shrink-0">
                 {module.status === 'current' && (
-                  <button className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2">
+                  <button
+                    className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
+                    onClick={() => handleContinue(module.id)}
+                  >
                     <span>Continue</span>
                     <ChevronRight className="h-4 w-4" />
                   </button>
