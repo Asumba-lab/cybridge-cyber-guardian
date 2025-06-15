@@ -269,7 +269,10 @@ const LearningPath = () => {
           Based on your performance, our reinforcement learning algorithm suggests focusing on 
           practical threat detection exercises to strengthen your analytical skills.
         </p>
-        <button className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200">
+        <button
+          className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200"
+          onClick={() => handleContinue(2)}
+        >
           Start Recommended Practice
         </button>
       </div>
