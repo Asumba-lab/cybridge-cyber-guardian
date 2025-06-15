@@ -51,16 +51,38 @@ const moduleDetails = {
     intro: "Dive into detecting and analyzing the many threats faced online every day.",
     lessons: [
       {
-        name: "Identifying Suspicious Activity",
+        name: "Recognizing Suspicious Activity",
         content: "Learn to recognize irregular user behaviors and patterns in network traffic.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Red flags in login patterns:</b> Unusual times, locations, or devices accessing accounts can mean compromise.</li>
+            <li><b>Unexpected data transfers:</b> Lots of data leaving a system suddenly may mean sensitive information is being stolen.</li>
+            <li><b>Deviations from normal behavior:</b> Watch for actions that don’t match the regular habits of users or systems.</li>
+          </ul>
+        ),
       },
       {
-        name: "Threat Analysis Tools",
+        name: "Introduction to Threat Analysis Tools",
         content: "Familiarize yourself with basic tools such as antivirus programs, log analyzers, and packet sniffers.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Antivirus Software:</b> Protects against viruses and malware by scanning files and monitoring your device in real time.</li>
+            <li><b>Log Analyzers:</b> Help detect attacks by searching for errors or odd activities in system records (logs).</li>
+            <li><b>Packet Sniffers:</b> Examine data as it travels over a network, making it possible to spot strange or unauthorized traffic.</li>
+          </ul>
+        ),
       },
       {
-        name: "Practical Exercise",
+        name: "Practical Exercise: Email Threat Simulation",
         content: "Review a series of suspicious email examples and determine if they are phishing attempts.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Check the sender:</b> Is the email address slightly different from what you expect? Scammers often use trick addresses.</li>
+            <li><b>Analyze links and attachments:</b> Hover over links to see where they really go; never download files from unknown senders.</li>
+            <li><b>Read the language:</b> Bad grammar, urgent language, or threats (“Act now or lose access!”) are common in phishing emails.</li>
+            <li>When in doubt, ask an adult or report the message for help!</li>
+          </ul>
+        ),
       },
     ],
     tip: "Hands-on practice is key! Try spotting threats in real or simulated environments."
@@ -208,6 +230,9 @@ const LearningPath = () => {
                 <li key={idx} className="p-4 bg-cyan-700/10 rounded-lg border border-cyan-500/20">
                   <div className="font-medium text-white">{lesson.name}</div>
                   <div className="text-gray-200">{lesson.content}</div>
+                  {lesson.notes && (
+                    <div className="mt-1">{lesson.notes}</div>
+                  )}
                 </li>
               ))}
             </ul>
