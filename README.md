@@ -50,6 +50,10 @@
 Visit the [About Page](/about) or use the "About" link in the navigation bar for a detailed project overview, technical design, and mission statement.
 
 ## Live Demo
+## Live Demo
+
+Access the deployed app here:  
+**[cybridge-cyber-guardian app](https://cybridge-cyber-guardian.lovable.app/)**
 
 
 ## Getting Started
@@ -63,14 +67,11 @@ Visit the [About Page](/about) or use the "About" link in the navigation bar for
 3. **Run locally**  
    `npm run dev`
 
-4. **View the app**  
-   Open https://cybridge-cyber-guardian.lovable.app
-
 ## Customization & Contribution
 
 - The platform is fully extensible:  
   Add new ML services, connect your own data pipeline, or plug into threat intelligence feeds with minimal effort.
-- PRs and community collaboration are welcome! See [CONTRIBUTING](CONTRIBUTING.md) for details.
+- PRs and community collaboration are welcome!
 
 ## License
 
