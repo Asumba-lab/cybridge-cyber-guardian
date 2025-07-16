@@ -47,9 +47,8 @@
 
 ## About
 
-Visit the [About Page](/about) or use the "About" link in the navigation bar for a detailed project overview, technical design, and mission statement.
+Visit the About Page or use the "About" link in the navigation bar for a detailed project overview, technical design, and mission statement.
 
-## Live Demo
 ## Live Demo
 
 Access the deployed app here:  
