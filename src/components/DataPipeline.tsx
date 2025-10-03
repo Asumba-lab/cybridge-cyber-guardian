@@ -1,8 +1,21 @@
-
-import React from 'react';
-import { Database, Cpu, Zap, Filter, Upload, Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { Database, Cpu, Zap, Filter, Upload, Download, Power, Eye, X } from 'lucide-react';
+import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
+import { Badge } from './ui/badge';
+import { ScrollArea } from './ui/scroll-area';
 
 const DataPipeline = () => {
+  const [stageStates, setStageStates] = useState({
+    0: true, // Data Ingestion
+    1: true, // Data Processing
+    2: true, // Feature Engineering
+    3: true, // Model Training
+    4: true  // Model Deployment
+  });
+  
+  const [selectedLog, setSelectedLog] = useState<{source: string, logs: any[]} | null>(null);
+
   const pipelineStages = [
     {
       name: 'Data Ingestion',
@@ -55,13 +68,69 @@ const DataPipeline = () => {
     retentionPeriod: '2 years'
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'active': return 'bg-green-500/20 text-green-400';
-      case 'optimizing': return 'bg-yellow-500/20 text-yellow-400';
-      case 'maintenance': return 'bg-red-500/20 text-red-400';
-      default: return 'bg-gray-500/20 text-gray-400';
-    }
+  const toggleStage = (index: number) => {
+    setStageStates(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  const getStatusColor = (isActive: boolean) => {
+    return isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400';
+  };
+
+  const generateMockLogs = (source: string) => {
+    const timestamps = Array.from({length: 50}, (_, i) => {
+      const date = new Date();
+      date.setMinutes(date.getMinutes() - i * 5);
+      return date;
+    });
+
+    const logTypes = ['INFO', 'WARNING', 'ERROR', 'SUCCESS'];
+    const messages = {
+      'Network Logs': [
+        'Connection established from 192.168.1.', 
+        'Packet loss detected on interface eth0',
+        'Firewall rule applied successfully',
+        'SSL handshake completed',
+        'Bandwidth threshold exceeded'
+      ],
+      'Email Traffic': [
+        'Email scanned for phishing indicators',
+        'Attachment quarantined - suspicious content',
+        'SPF record validated',
+        'DMARC policy enforced',
+        'Email delivered successfully'
+      ],
+      'User Activity': [
+        'User login attempt from new location',
+        'Password changed successfully',
+        'Multi-factor authentication enabled',
+        'Session expired - automatic logout',
+        'Profile updated'
+      ],
+      'System Events': [
+        'System backup completed',
+        'CPU usage spiked to 89%',
+        'Disk space warning - 85% full',
+        'Service restarted successfully',
+        'Security patch applied'
+      ]
+    };
+
+    return timestamps.map((time, i) => ({
+      timestamp: time.toLocaleString(),
+      type: logTypes[Math.floor(Math.random() * logTypes.length)],
+      message: messages[source][Math.floor(Math.random() * messages[source].length)] + ` ${Math.floor(Math.random() * 255)}`,
+      id: `log-${i}`
+    }));
+  };
+
+  const openLogs = (source: string) => {
+    setSelectedLog({
+      source,
+      logs: generateMockLogs(source)
+    });
   };
 
   return (
@@ -93,7 +162,7 @@ const DataPipeline = () => {
                 {/* Pipeline Stage */}
                 <div className={`bg-gradient-to-r ${stage.color} p-1 rounded-xl`}>
                   <div className="bg-black/80 p-6 rounded-lg">
-                    <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                           <Icon className="h-6 w-6 text-white" />
@@ -103,16 +172,36 @@ const DataPipeline = () => {
                           <p className="text-white/60">{stage.throughput}</p>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(stage.status)}`}>
-                        {stage.status.charAt(0).toUpperCase() + stage.status.slice(1)}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <Badge className={getStatusColor(stageStates[index])}>
+                          {stageStates[index] ? 'Active' : 'Inactive'}
+                        </Badge>
+                        <Button
+                          onClick={() => toggleStage(index)}
+                          variant={stageStates[index] ? "destructive" : "default"}
+                          size="sm"
+                          className="gap-2"
+                        >
+                          <Power className="h-4 w-4" />
+                          {stageStates[index] ? 'Deactivate' : 'Activate'}
+                        </Button>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                       {(stage.sources || stage.processes || stage.features || stage.models || stage.deployments)?.map((item, idx) => (
-                        <div key={idx} className="bg-white/10 p-3 rounded-lg text-center">
-                          <div className="text-white text-sm font-medium">{item}</div>
-                        </div>
+                        <button
+                          key={idx}
+                          onClick={() => stage.sources && openLogs(item)}
+                          className={`bg-white/10 p-3 rounded-lg text-center transition-all ${
+                            stage.sources ? 'hover:bg-white/20 hover:scale-105 cursor-pointer' : ''
+                          }`}
+                        >
+                          <div className="text-white text-sm font-medium flex items-center justify-center gap-2">
+                            {item}
+                            {stage.sources && <Eye className="h-3 w-3" />}
+                          </div>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -216,6 +305,47 @@ const DataPipeline = () => {
           </div>
         </div>
       </div>
+
+      {/* Log Viewer Dialog */}
+      <Dialog open={selectedLog !== null} onOpenChange={() => setSelectedLog(null)}>
+        <DialogContent className="max-w-4xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center justify-between">
+              <span>{selectedLog?.source} - Detailed Logs</span>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedLog(null)}>
+                <X className="h-4 w-4" />
+              </Button>
+            </DialogTitle>
+            <DialogDescription>
+              Real-time log entries from {selectedLog?.source}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <ScrollArea className="h-[500px] w-full rounded-md border p-4">
+            <div className="space-y-2">
+              {selectedLog?.logs.map((log) => (
+                <div
+                  key={log.id}
+                  className={`p-3 rounded-lg border-l-4 ${
+                    log.type === 'ERROR' ? 'bg-red-500/10 border-red-500' :
+                    log.type === 'WARNING' ? 'bg-yellow-500/10 border-yellow-500' :
+                    log.type === 'SUCCESS' ? 'bg-green-500/10 border-green-500' :
+                    'bg-blue-500/10 border-blue-500'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <Badge variant="outline" className="text-xs">
+                      {log.type}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">{log.timestamp}</span>
+                  </div>
+                  <p className="text-sm">{log.message}</p>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
