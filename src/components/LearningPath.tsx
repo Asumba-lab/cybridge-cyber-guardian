@@ -22,8 +22,27 @@ const moduleReviews = {
       "Tools used for threat analysis.",
     ],
     recommendations: "Continue practical exercises and case studies to strengthen your skills.",
+  },
+  3: {
+    title: 'Machine Learning in Cybersecurity - Review',
+    summary: "You've explored how AI and machine learning revolutionize cybersecurity threat detection and prevention.",
+    keyPoints: [
+      "Understanding supervised, unsupervised, and reinforcement learning paradigms.",
+      "How ML models detect anomalies and predict cyber threats.",
+      "Real-world applications of AI in cybersecurity defense.",
+    ],
+    recommendations: "Experiment with ML-based security tools and explore advanced threat prediction models.",
+  },
+  5: {
+    title: 'Ethical Hacking - Review',
+    summary: "Congratulations on completing your journey into ethical hacking and penetration testing!",
+    keyPoints: [
+      "Understanding the hacker mindset and attack methodologies.",
+      "Hands-on experience with vulnerability assessment tools.",
+      "Legal and ethical considerations in cybersecurity testing.",
+    ],
+    recommendations: "Practice in safe, legal environments like CTF challenges and consider pursuing certifications like CEH.",
   }
-  // More reviews can be added here for other modules if desired
 };
 
 const moduleDetails = {
@@ -87,7 +106,212 @@ const moduleDetails = {
     ],
     tip: "Hands-on practice is key! Try spotting threats in real or simulated environments."
   },
-  // ...you can add further modules similarly
+  3: {
+    title: 'Machine Learning in Cybersecurity',
+    intro: "Discover how artificial intelligence and machine learning are transforming the cybersecurity landscape, from threat detection to predictive defense systems.",
+    lessons: [
+      {
+        name: "Introduction to ML in Security",
+        content: "Machine Learning enables computers to learn from data and improve their performance without being explicitly programmed. In cybersecurity, ML helps detect threats that traditional security systems might miss.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Pattern Recognition:</b> ML algorithms can identify patterns in millions of security events that humans would miss.</li>
+            <li><b>Adaptive Defense:</b> Unlike static rules, ML systems learn and adapt to new threats as they emerge.</li>
+            <li><b>Speed & Scale:</b> ML can analyze vast amounts of data in real-time, providing instant threat alerts.</li>
+            <li><b>Reducing False Positives:</b> Advanced ML models learn to distinguish between real threats and harmless anomalies.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Supervised Learning for Threat Classification",
+        content: "Supervised learning uses labeled data to train models that can classify new threats. Think of it like teaching a computer to recognize the difference between safe and malicious files by showing it thousands of examples.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Malware Detection:</b> Training models on known malware samples to identify new variants based on code patterns.</li>
+            <li><b>Spam Filtering:</b> Email systems learn to recognize phishing and spam by analyzing features like sender patterns, keywords, and links.</li>
+            <li><b>Network Intrusion Detection:</b> Classifying network traffic as normal or suspicious based on historical attack data.</li>
+            <li><b>Real Example:</b> Antivirus software uses supervised ML to detect 99% of known malware families instantly.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Unsupervised Learning for Anomaly Detection",
+        content: "Unsupervised learning finds hidden patterns in data without labeled examples. It's perfect for detecting unknown threats by identifying unusual behavior.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Zero-Day Threat Detection:</b> Identifies completely new attacks by recognizing abnormal system behavior.</li>
+            <li><b>User Behavior Analytics (UBA):</b> Learns normal user patterns and flags unusual activities like login from strange locations.</li>
+            <li><b>Clustering Attacks:</b> Groups similar security events to identify coordinated attack campaigns.</li>
+            <li><b>Example:</b> Banks use unsupervised ML to detect fraud by spotting unusual transaction patterns.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Reinforcement Learning for Active Defense",
+        content: "Reinforcement learning trains AI agents to make optimal security decisions through trial and error, learning from rewards and penalties.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Automated Response Systems:</b> AI agents learn the best actions to take when threats are detected (block, quarantine, alert).</li>
+            <li><b>Penetration Testing Bots:</b> AI systems that learn to find vulnerabilities like a human hacker would.</li>
+            <li><b>Adaptive Firewalls:</b> Firewalls that learn optimal filtering rules based on attack success/failure.</li>
+            <li><b>Gaming the Attackers:</b> Creating moving target defenses that change system configurations to confuse attackers.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Deep Learning and Neural Networks",
+        content: "Deep learning uses neural networks inspired by the human brain to solve complex cybersecurity challenges. These multi-layered models excel at finding intricate patterns.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Advanced Malware Analysis:</b> Deep learning can analyze executable code and identify malicious intent even in obfuscated programs.</li>
+            <li><b>Natural Language Processing (NLP):</b> Understanding phishing emails, analyzing security reports, and detecting social engineering attacks.</li>
+            <li><b>Image Recognition:</b> Identifying fake websites, detecting CAPTCHA bypass attempts, and analyzing security camera footage.</li>
+            <li><b>Behavioral Biometrics:</b> Recognizing users by typing patterns, mouse movements, and other unique behaviors.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Practical Applications & Tools",
+        content: "Explore real-world ML-powered security tools that professionals use to protect systems and data.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Darktrace:</b> Uses AI to detect and respond to cyber threats in real-time by learning 'normal' for every device and user.</li>
+            <li><b>Cylance:</b> AI-powered antivirus that prevents malware execution before it can cause damage.</li>
+            <li><b>IBM Watson for Cyber Security:</b> Processes massive amounts of security research and threat intelligence.</li>
+            <li><b>Vectra AI:</b> Uses ML to detect attacker behaviors hiding in network traffic.</li>
+            <li><b>Open Source Tools:</b> Try TensorFlow, scikit-learn, and PyTorch to build your own ML security models!</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Challenges & Limitations",
+        content: "While ML is powerful, it's not perfect. Understanding limitations helps you use it effectively and avoid over-reliance.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Adversarial Attacks:</b> Hackers can trick ML models by subtly modifying malware to evade detection.</li>
+            <li><b>Data Quality Issues:</b> ML models are only as good as the data they're trained on—garbage in, garbage out!</li>
+            <li><b>False Positives/Negatives:</b> No model is 100% accurate; balancing sensitivity and specificity is crucial.</li>
+            <li><b>Explainability:</b> Deep learning models can be "black boxes"—hard to understand why they made specific decisions.</li>
+            <li><b>Resource Intensive:</b> Training sophisticated ML models requires significant computational power and expertise.</li>
+          </ul>
+        ),
+      },
+    ],
+    tip: "Start experimenting with simple ML projects! Try building a spam detector or analyzing network logs with Python and scikit-learn."
+  },
+  5: {
+    title: 'Ethical Hacking',
+    intro: "Enter the world of ethical hacking—where you'll learn to think like an attacker to better defend systems. Discover penetration testing, vulnerability assessment, and the legal frameworks that guide white-hat hackers.",
+    lessons: [
+      {
+        name: "What is Ethical Hacking?",
+        content: "Ethical hacking (also called penetration testing or white-hat hacking) is the authorized practice of bypassing system security to identify vulnerabilities before malicious hackers can exploit them.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>White Hat vs. Black Hat:</b> White hats have permission and work to improve security; black hats break the law for personal gain.</li>
+            <li><b>Legal Authorization:</b> ALWAYS get written permission before testing any system—unauthorized hacking is illegal!</li>
+            <li><b>Ethical Code:</b> Professional ethical hackers follow strict codes of conduct and confidentiality agreements.</li>
+            <li><b>Career Path:</b> Ethical hackers are in high demand, with salaries often exceeding $100,000+ per year.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "The Hacker Mindset",
+        content: "Thinking like an attacker means being curious, persistent, and creative. You must understand how systems work and how they can fail.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Curiosity:</b> Always ask 'What if?' and 'How does this really work?'—don't accept surface-level explanations.</li>
+            <li><b>Persistence:</b> Finding vulnerabilities often requires trying hundreds of approaches; never give up easily.</li>
+            <li><b>Creativity:</b> Think outside the box—the best exploits often come from unexpected angles.</li>
+            <li><b>Attention to Detail:</b> Small configuration errors or code bugs can lead to major security breaches.</li>
+            <li><b>Documentation:</b> Professional pentesters meticulously document every finding for client reports.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Reconnaissance & Information Gathering",
+        content: "The first phase of any penetration test is reconnaissance—gathering as much information about the target as possible without directly attacking it.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Passive Recon:</b> Gathering public information (Google searches, social media, company websites) without touching the target.</li>
+            <li><b>Active Recon:</b> Directly interacting with the target system (port scanning, service enumeration) to map the attack surface.</li>
+            <li><b>OSINT (Open Source Intelligence):</b> Using publicly available data to learn about the target organization and employees.</li>
+            <li><b>Tools:</b> Nmap (port scanner), Shodan (search engine for Internet-connected devices), theHarvester (email/domain gatherer).</li>
+            <li><b>Social Engineering Prep:</b> Information gathered can be used to craft convincing phishing attacks.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Scanning & Enumeration",
+        content: "Once you've gathered initial information, the next step is to identify specific vulnerabilities in the target system through systematic scanning.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Port Scanning:</b> Identifying open ports and services running on the target (e.g., web server on port 80, SSH on port 22).</li>
+            <li><b>Vulnerability Scanning:</b> Using automated tools to find known security weaknesses in software and configurations.</li>
+            <li><b>Service Version Detection:</b> Determining exact software versions to search for specific exploits.</li>
+            <li><b>Common Tools:</b> Nmap, Nessus, OpenVAS, Nikto (web scanner), Burp Suite (web application testing).</li>
+            <li><b>Banner Grabbing:</b> Extracting information from service banners that may reveal system details.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Exploitation Techniques",
+        content: "Exploitation is the phase where you actually attempt to breach the system using discovered vulnerabilities. This requires deep technical knowledge and caution.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Buffer Overflow:</b> Exploiting poor memory management to execute arbitrary code on the target system.</li>
+            <li><b>SQL Injection:</b> Inserting malicious SQL code into web forms to manipulate or steal database information.</li>
+            <li><b>Cross-Site Scripting (XSS):</b> Injecting malicious scripts into web pages viewed by other users.</li>
+            <li><b>Password Attacks:</b> Brute force, dictionary attacks, and credential stuffing to gain unauthorized access.</li>
+            <li><b>Metasploit Framework:</b> The most popular exploitation framework with thousands of pre-built exploits.</li>
+            <li><b>Social Engineering:</b> Manipulating people into revealing sensitive information or performing actions that compromise security.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Post-Exploitation & Privilege Escalation",
+        content: "After gaining initial access, ethical hackers must demonstrate the full impact by escalating privileges and maintaining access (with permission).",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Privilege Escalation:</b> Moving from limited user access to administrator/root level to show maximum potential damage.</li>
+            <li><b>Lateral Movement:</b> Spreading through the network to access other systems and resources.</li>
+            <li><b>Persistence Mechanisms:</b> Establishing backdoors to maintain access (immediately removed after demonstration).</li>
+            <li><b>Data Exfiltration:</b> Demonstrating ability to steal sensitive information without being detected.</li>
+            <li><b>Covering Tracks:</b> Understanding how attackers hide their activities (to help defenders detect them).</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Legal & Ethical Frameworks",
+        content: "Understanding the legal boundaries and ethical responsibilities is crucial for anyone pursuing ethical hacking as a career or hobby.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Authorization is EVERYTHING:</b> Never test systems you don't own or have explicit written permission to test.</li>
+            <li><b>Scope of Engagement:</b> Penetration tests have clearly defined boundaries—stay within them!</li>
+            <li><b>Data Protection Laws:</b> GDPR, HIPAA, and other regulations affect how you handle discovered data.</li>
+            <li><b>Responsible Disclosure:</b> When you find vulnerabilities, report them properly—don't publicize before patches are available.</li>
+            <li><b>Bug Bounty Programs:</b> Legal ways to earn money finding vulnerabilities (HackerOne, Bugcrowd, Synack).</li>
+            <li><b>Certifications:</b> CEH (Certified Ethical Hacker), OSCP (Offensive Security Certified Professional), GPEN.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Practice Safely & Legally",
+        content: "There are many legal and safe ways to develop your ethical hacking skills without breaking the law or damaging real systems.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Capture The Flag (CTF) Competitions:</b> Gamified hacking challenges with legal targets (CTFtime.org, PicoCTF).</li>
+            <li><b>Vulnerable Virtual Machines:</b> Practice on intentionally vulnerable systems (DVWA, Metasploitable, VulnHub).</li>
+            <li><b>Online Labs:</b> Safe training environments (Hack The Box, TryHackMe, OverTheWire, PentesterLab).</li>
+            <li><b>Your Own Lab:</b> Set up virtual machines on your computer using VirtualBox or VMware.</li>
+            <li><b>Bug Bounties:</b> Test real companies with permission and get paid for valid findings!</li>
+            <li><b>Never Practice on:</b> School networks, friends' computers, or any system without explicit permission.</li>
+          </ul>
+        ),
+      },
+    ],
+    tip: "Build your own hacking lab with free virtual machines and start with beginner CTF challenges. Document everything you learn!"
+  },
 };
 
 const threatDetectionExercises = [
