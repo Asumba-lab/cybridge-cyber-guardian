@@ -67,44 +67,122 @@ const moduleDetails = {
   },
   2: {
     title: 'Threat Detection & Analysis',
-    intro: "Dive into detecting and analyzing the many threats faced online every day.",
+    intro: "Dive into detecting and analyzing the many threats faced online every day. Learn to recognize attack patterns, use analysis tools, and think like a defender.",
     lessons: [
       {
-        name: "Recognizing Suspicious Activity",
-        content: "Learn to recognize irregular user behaviors and patterns in network traffic.",
+        name: "Understanding the Cyber Threat Landscape",
+        content: "The threat landscape is constantly evolving. New attack methods emerge daily, and defenders must stay informed to protect systems effectively.",
         notes: (
           <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
-            <li><b>Red flags in login patterns:</b> Unusual times, locations, or devices accessing accounts can mean compromise.</li>
-            <li><b>Unexpected data transfers:</b> Lots of data leaving a system suddenly may mean sensitive information is being stolen.</li>
-            <li><b>Deviations from normal behavior:</b> Watch for actions that don’t match the regular habits of users or systems.</li>
+            <li><b>Advanced Persistent Threats (APTs):</b> Sophisticated, long-term attacks by organized groups targeting specific organizations.</li>
+            <li><b>Ransomware:</b> Malicious software that encrypts your data and demands payment for the decryption key.</li>
+            <li><b>Zero-Day Exploits:</b> Attacks that exploit vulnerabilities unknown to the software vendor—no patch exists yet!</li>
+            <li><b>Insider Threats:</b> Employees or trusted individuals who intentionally or accidentally compromise security.</li>
+            <li><b>Supply Chain Attacks:</b> Compromising trusted software or hardware before it reaches the end user.</li>
+            <li><b>IoT Vulnerabilities:</b> Smart devices with poor security becoming entry points for attackers.</li>
           </ul>
         ),
       },
       {
-        name: "Introduction to Threat Analysis Tools",
-        content: "Familiarize yourself with basic tools such as antivirus programs, log analyzers, and packet sniffers.",
+        name: "Recognizing Suspicious Activity",
+        content: "Detecting threats early requires recognizing patterns and behaviors that deviate from normal operations. Learning these red flags can prevent major breaches.",
         notes: (
           <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
-            <li><b>Antivirus Software:</b> Protects against viruses and malware by scanning files and monitoring your device in real time.</li>
-            <li><b>Log Analyzers:</b> Help detect attacks by searching for errors or odd activities in system records (logs).</li>
-            <li><b>Packet Sniffers:</b> Examine data as it travels over a network, making it possible to spot strange or unauthorized traffic.</li>
+            <li><b>Unusual login patterns:</b> Access from unexpected locations, impossible travel (logging in from two countries minutes apart), or odd times.</li>
+            <li><b>Multiple failed login attempts:</b> Could indicate brute-force password attacks or credential stuffing.</li>
+            <li><b>Unexpected data transfers:</b> Large amounts of data leaving your network, especially to unfamiliar destinations.</li>
+            <li><b>New or modified files:</b> Executable files appearing in unusual locations or system files being changed.</li>
+            <li><b>Performance degradation:</b> Systems running slowly could mean malware is consuming resources.</li>
+            <li><b>Deviations from baselines:</b> Any behavior that doesn't match established normal patterns for users or systems.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Network Traffic Analysis",
+        content: "Network traffic analysis helps identify malicious activity by examining data flowing through your network. Understanding normal traffic patterns is essential.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Protocol Analysis:</b> Understanding TCP/IP, HTTP, DNS, and other protocols to spot abnormal communications.</li>
+            <li><b>Packet Inspection:</b> Examining individual packets to identify malicious payloads or command-and-control traffic.</li>
+            <li><b>Flow Analysis:</b> Looking at patterns of communication (who talks to whom, how often, how much data).</li>
+            <li><b>DNS Tunneling Detection:</b> Attackers hiding data in DNS requests to bypass security controls.</li>
+            <li><b>Beaconing Behavior:</b> Regular periodic communications that might indicate malware checking in with attackers.</li>
+            <li><b>Tools:</b> Wireshark (packet analyzer), Zeek/Bro (network monitoring), Suricata (intrusion detection).</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Log Analysis & SIEM Systems",
+        content: "Logs are the breadcrumbs that attackers leave behind. Security Information and Event Management (SIEM) systems help analyze massive amounts of log data.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>What are logs?:</b> Records of events from systems, applications, firewalls, and other devices.</li>
+            <li><b>Centralized Logging:</b> Collecting logs from all sources in one place for correlation and analysis.</li>
+            <li><b>Correlation Rules:</b> Connecting related events across different systems to identify attack patterns.</li>
+            <li><b>Real-time Alerting:</b> Immediate notifications when suspicious patterns are detected.</li>
+            <li><b>Common SIEM Tools:</b> Splunk, ELK Stack (Elasticsearch, Logstash, Kibana), IBM QRadar, ArcSight.</li>
+            <li><b>What to look for:</b> Failed authentications, privilege escalations, configuration changes, error spikes.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Malware Analysis Fundamentals",
+        content: "Understanding how malware works helps you detect and respond to infections. There are two main approaches: static and dynamic analysis.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Static Analysis:</b> Examining malware code without running it (file hashes, strings, metadata, code structure).</li>
+            <li><b>Dynamic Analysis:</b> Running malware in isolated environments (sandboxes) to observe its behavior safely.</li>
+            <li><b>Indicators of Compromise (IOCs):</b> Digital fingerprints of malware (file hashes, IP addresses, domain names).</li>
+            <li><b>Behavioral Indicators:</b> Actions malware takes (registry modifications, network connections, file encryption).</li>
+            <li><b>Analysis Tools:</b> VirusTotal (online scanner), Cuckoo Sandbox (automated analysis), IDA Pro (disassembler).</li>
+            <li><b>Never analyze malware on your main computer!</b> Always use isolated virtual machines or cloud sandboxes.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Phishing & Social Engineering Detection",
+        content: "Most successful attacks start with social engineering—manipulating people rather than hacking systems. Learning to spot these attempts is crucial.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Email Analysis:</b> Check sender address carefully, look for misspellings, verify links before clicking.</li>
+            <li><b>Urgency & Pressure:</b> Scammers create artificial urgency ("Account will be closed!" "Act now!").</li>
+            <li><b>Too Good to Be True:</b> Unexpected prizes, money, or opportunities are usually scams.</li>
+            <li><b>Spear Phishing:</b> Targeted attacks using personal information to appear legitimate.</li>
+            <li><b>Vishing & Smishing:</b> Phishing via voice calls and SMS messages—don't assume phones are safe!</li>
+            <li><b>Verification Steps:</b> Contact organizations directly using official channels, never through provided links.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Threat Intelligence & Sharing",
+        content: "Cybersecurity is a team sport. Organizations share threat intelligence to defend against common adversaries more effectively.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>What is Threat Intel?:</b> Information about current and emerging threats, attacker tactics, and vulnerabilities.</li>
+            <li><b>STIX/TAXII:</b> Standardized formats for sharing threat intelligence between organizations and tools.</li>
+            <li><b>Threat Feeds:</b> Real-time streams of threat data (malicious IPs, domains, file hashes) from security companies.</li>
+            <li><b>Information Sharing Groups:</b> ISACs (Information Sharing and Analysis Centers) for different industries.</li>
+            <li><b>Open Source Intelligence:</b> Public sources like security blogs, researcher reports, and vulnerability databases.</li>
+            <li><b>Actionable Intelligence:</b> Information you can use immediately (block these IPs, patch this vulnerability).</li>
           </ul>
         ),
       },
       {
         name: "Practical Exercise: Email Threat Simulation",
-        content: "Review a series of suspicious email examples and determine if they are phishing attempts.",
+        content: "Review a series of suspicious email examples and determine if they are phishing attempts. Practice makes perfect!",
         notes: (
           <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
             <li><b>Check the sender:</b> Is the email address slightly different from what you expect? Scammers often use trick addresses.</li>
             <li><b>Analyze links and attachments:</b> Hover over links to see where they really go; never download files from unknown senders.</li>
-            <li><b>Read the language:</b> Bad grammar, urgent language, or threats (“Act now or lose access!”) are common in phishing emails.</li>
-            <li>When in doubt, ask an adult or report the message for help!</li>
+            <li><b>Read the language:</b> Bad grammar, urgent language, or threats ("Act now or lose access!") are common in phishing.</li>
+            <li><b>Verify requests:</b> If someone asks for passwords, payment info, or unusual actions, verify through another channel.</li>
+            <li><b>Look for inconsistencies:</b> Does the branding look right? Are there spelling errors in the company name?</li>
+            <li><b>When in doubt:</b> Report suspicious emails to your IT department, teacher, or security team.</li>
           </ul>
         ),
       },
     ],
-    tip: "Hands-on practice is key! Try spotting threats in real or simulated environments."
+    tip: "Hands-on practice is key! Try analyzing real security logs, practice with CTF challenges, and stay updated on current threats."
   },
   3: {
     title: 'Machine Learning in Cybersecurity',
