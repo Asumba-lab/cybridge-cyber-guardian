@@ -478,6 +478,9 @@ const LearningPath = ({
   const [localCompletedExercises, setLocalCompletedExercises] = useState(0);
   const [localChallengeIdx, setLocalChallengeIdx] = useState<number | null>(null);
 
+  // --- NEW: Learning Initialization State ---
+  const [learningInitialized, setLearningInitialized] = useState(false);
+
   // --- NEW: Module and Review State ---
   const [reviewModuleId, setReviewModuleId] = useState<number | null>(null);
   const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
@@ -609,6 +612,65 @@ const LearningPath = ({
       default: return <Circle className="h-6 w-6 text-gray-500" />;
     }
   };
+
+  // --- Learning Initialization Screen ---
+  if (!learningInitialized) {
+    return (
+      <div className="relative animate-fade-in">
+        <div className="bg-gradient-to-br from-cyan-500/30 via-purple-500/30 to-pink-500/20 backdrop-blur-lg border border-white/20 p-8 md:p-12 rounded-2xl text-center shadow-2xl">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-4 shadow-lg">
+              <Play className="h-10 w-10 md:h-12 md:w-12 text-white" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Welcome to Your Cybersecurity Journey! 🚀
+            </h2>
+            <p className="text-gray-200 text-lg md:text-xl mb-6 max-w-2xl mx-auto">
+              Get ready to explore the exciting world of cybersecurity! Before you begin, 
+              you'll need to initialize your learning path to unlock all modules and content.
+            </p>
+          </div>
+
+          <div className="bg-black/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl mb-8 max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-cyan-300 mb-3 flex items-center justify-center gap-2">
+              <span role="img" aria-label="book">📚</span>
+              What You'll Learn
+            </h3>
+            <ul className="text-left space-y-3 text-gray-200">
+              <li className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <span><strong>Cybersecurity Fundamentals:</strong> Master the basics of protecting digital systems</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <span><strong>Threat Detection:</strong> Learn to identify and analyze cyber threats</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <span><strong>Machine Learning:</strong> Explore AI-powered security solutions</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <span><strong>Ethical Hacking:</strong> Understand penetration testing and security assessment</span>
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => setLearningInitialized(true)}
+            className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-cyan-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center gap-3"
+          >
+            <Play className="h-6 w-6" />
+            Initialize Learning & Start Journey
+          </button>
+
+          <p className="text-gray-400 text-sm mt-6">
+            Click the button above to unlock all modules and begin your adventure!
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // --- Review view
   if (reviewModuleId !== null && moduleReviews[reviewModuleId]) {
