@@ -1,25 +1,66 @@
-import React from 'react';
-import { Trophy, Medal, Star, TrendingUp } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { Trophy, Medal, Star, TrendingUp, Target, Zap } from 'lucide-react';
+
+interface WeeklyChallengeType {
+  id: string;
+  title: string;
+  description: string;
+  target: number;
+  current: number;
+  xpReward: number;
+  type: 'threat-detection' | 'vulnerability-scan' | 'secure-coding' | 'incident-response';
+}
+
+interface UserStats {
+  level: number;
+  xp: number;
+  streak: number;
+  completedModules: number;
+  totalEarnedXP: number;
+}
 
 interface LeaderboardProps {
   onContinueChallenge?: () => void;
   completedExercises?: number;
+  weeklyChallenges?: WeeklyChallengeType[];
+  userStats?: UserStats;
+  onChallengeProgress?: (type: WeeklyChallengeType['type']) => void;
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
   onContinueChallenge,
   completedExercises = 0,
+  weeklyChallenges = [],
+  userStats,
+  onChallengeProgress,
 }) => {
-  const leaderboardData = [
-    { rank: 1, name: 'Alex Chen', xp: 15847, level: 28, badge: 'Expert', streak: 45 },
-    { rank: 2, name: 'Sarah Kumar', xp: 14532, level: 26, badge: 'Advanced', streak: 32 },
-    { rank: 3, name: 'Mike Johnson', xp: 13891, level: 25, badge: 'Advanced', streak: 28 },
-    { rank: 4, name: 'Emma Davis', xp: 12456, level: 23, badge: 'Intermediate', streak: 21 },
-    { rank: 5, name: 'You', xp: 11234, level: 21, badge: 'Intermediate', streak: 15 },
-    { rank: 6, name: 'Tom Wilson', xp: 10987, level: 20, badge: 'Intermediate', streak: 18 },
-    { rank: 7, name: 'Lisa Brown', xp: 9876, level: 19, badge: 'Beginner', streak: 12 },
-    { rank: 8, name: 'David Lee', xp: 8765, level: 17, badge: 'Beginner', streak: 9 }
-  ];
+  // Calculate dynamic leaderboard based on user's earned XP
+  const leaderboardData = useMemo(() => {
+    const baseData = [
+      { rank: 1, name: 'Alex Chen', xp: 15847, level: 28, badge: 'Expert', streak: 45 },
+      { rank: 2, name: 'Sarah Kumar', xp: 14532, level: 26, badge: 'Advanced', streak: 32 },
+      { rank: 3, name: 'Mike Johnson', xp: 13891, level: 25, badge: 'Advanced', streak: 28 },
+      { rank: 4, name: 'Emma Davis', xp: 12456, level: 23, badge: 'Intermediate', streak: 21 },
+      { rank: 5, name: 'You', xp: 11234, level: 21, badge: 'Intermediate', streak: 15 },
+      { rank: 6, name: 'Tom Wilson', xp: 10987, level: 20, badge: 'Intermediate', streak: 18 },
+      { rank: 7, name: 'Lisa Brown', xp: 9876, level: 19, badge: 'Beginner', streak: 12 },
+      { rank: 8, name: 'David Lee', xp: 8765, level: 17, badge: 'Beginner', streak: 9 }
+    ];
+
+    // Update user's XP if userStats provided
+    if (userStats) {
+      const userIndex = baseData.findIndex(u => u.name === 'You');
+      if (userIndex !== -1) {
+        baseData[userIndex].xp = userStats.xp;
+        baseData[userIndex].level = userStats.level;
+        baseData[userIndex].streak = userStats.streak;
+      }
+    }
+
+    // Sort by XP and recalculate ranks
+    const sorted = [...baseData].sort((a, b) => b.xp - a.xp);
+    return sorted.map((user, index) => ({ ...user, rank: index + 1 }));
+  }, [userStats]);
 
   const getRankIcon = (rank) => {
     switch (rank) {
@@ -145,28 +186,94 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
         </div>
       </div>
 
-      {/* Weekly Challenge */}
-      <div className="bg-gradient-to-r from-green-500/20 to-cyan-500/20 border border-green-500/30 p-6 rounded-xl">
-        <h3 className="text-xl font-bold text-white mb-2">🎯 Weekly Challenge</h3>
-        <p className="text-gray-300 mb-4">
-          Complete 5 threat detection exercises to earn bonus XP and climb the leaderboard!
-        </p>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-32 bg-gray-700 rounded-full h-2">
-              <div className="bg-green-500 h-2 rounded-full" style={{ width: `${(weeklyComplete / weeklyTotal) * 100}%` }} />
-            </div>
-            <span className="text-green-400 text-sm font-medium">
-              {weeklyComplete}/{weeklyTotal} Complete
-            </span>
+      {/* Weekly Challenges */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-white flex items-center space-x-2">
+            <Target className="h-6 w-6 text-cyan-400" />
+            <span>Weekly Challenges</span>
+          </h2>
+          <div className="flex items-center space-x-2 bg-yellow-500/20 px-4 py-2 rounded-lg border border-yellow-500/30">
+            <Zap className="h-5 w-5 text-yellow-400" />
+            <span className="text-yellow-400 font-bold">{userStats?.totalEarnedXP || 0} Bonus XP Earned</span>
           </div>
-          <button
-            className={`bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all duration-200 ${completed ? "opacity-50 cursor-not-allowed" : ""}`}
-            onClick={!completed && onContinueChallenge ? onContinueChallenge : undefined}
-            disabled={completed}
-          >
-            {completed ? "Challenge Complete" : "Continue Challenge"}
-          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {weeklyChallenges.map((challenge) => {
+            const progress = (challenge.current / challenge.target) * 100;
+            const isComplete = challenge.current >= challenge.target;
+            
+            const getChallengeColor = (type: string) => {
+              switch (type) {
+                case 'threat-detection': return { bg: 'from-green-500/20 to-cyan-500/20', border: 'border-green-500/30', text: 'text-green-400', progress: 'bg-green-500' };
+                case 'vulnerability-scan': return { bg: 'from-red-500/20 to-orange-500/20', border: 'border-red-500/30', text: 'text-red-400', progress: 'bg-red-500' };
+                case 'secure-coding': return { bg: 'from-blue-500/20 to-purple-500/20', border: 'border-blue-500/30', text: 'text-blue-400', progress: 'bg-blue-500' };
+                case 'incident-response': return { bg: 'from-yellow-500/20 to-orange-500/20', border: 'border-yellow-500/30', text: 'text-yellow-400', progress: 'bg-yellow-500' };
+                default: return { bg: 'from-gray-500/20 to-gray-500/20', border: 'border-gray-500/30', text: 'text-gray-400', progress: 'bg-gray-500' };
+              }
+            };
+
+            const colors = getChallengeColor(challenge.type);
+
+            return (
+              <div
+                key={challenge.id}
+                className={`bg-gradient-to-r ${colors.bg} border ${colors.border} p-6 rounded-xl transition-all duration-300 ${
+                  isComplete ? 'opacity-75' : 'hover:scale-[1.02]'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1">{challenge.title}</h3>
+                    <p className="text-gray-300 text-sm">{challenge.description}</p>
+                  </div>
+                  {isComplete && (
+                    <div className="bg-green-500/20 p-2 rounded-full">
+                      <Trophy className="h-5 w-5 text-green-400" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className={`${colors.text} font-medium`}>
+                      {challenge.current}/{challenge.target} Complete
+                    </span>
+                    <span className="text-yellow-400 font-bold">+{challenge.xpReward} XP</span>
+                  </div>
+                  
+                  <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div
+                      className={`${colors.progress} h-2 rounded-full transition-all duration-500`}
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+
+                  {!isComplete && (
+                    <button
+                      className={`w-full mt-3 bg-gradient-to-r ${colors.bg} border ${colors.border} text-white px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-all duration-200`}
+                      onClick={() => {
+                        if (challenge.type === 'threat-detection' && onContinueChallenge) {
+                          onContinueChallenge();
+                        } else if (onChallengeProgress) {
+                          onChallengeProgress(challenge.type);
+                        }
+                      }}
+                    >
+                      {isComplete ? '✓ Completed' : 'Start Challenge'}
+                    </button>
+                  )}
+
+                  {isComplete && (
+                    <div className="mt-3 bg-green-500/20 text-green-400 px-4 py-2 rounded-lg text-center font-medium">
+                      ✓ Challenge Complete! +{challenge.xpReward} XP Earned
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

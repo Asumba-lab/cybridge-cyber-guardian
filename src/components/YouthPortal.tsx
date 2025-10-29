@@ -8,16 +8,67 @@ import CybersecurityNotes from './CybersecurityNotes';
 
 const WEEKLY_EXERCISES_COUNT = 5;
 
+interface WeeklyChallengeType {
+  id: string;
+  title: string;
+  description: string;
+  target: number;
+  current: number;
+  xpReward: number;
+  type: 'threat-detection' | 'vulnerability-scan' | 'secure-coding' | 'incident-response';
+}
+
 const YouthPortal = () => {
   const [activeTab, setActiveTab] = useState('learning');
   const [userStats, setUserStats] = useState({
     level: 12,
     xp: 2847,
     streak: 7,
-    completedModules: 23
+    completedModules: 23,
+    totalEarnedXP: 0
   });
 
-  // --- Weekly Challenge State for Global Access ---
+  // --- Weekly Challenges State ---
+  const [weeklyChallenges, setWeeklyChallenges] = useState<WeeklyChallengeType[]>([
+    {
+      id: 'threat-detection-1',
+      title: '🎯 Threat Detection Master',
+      description: 'Complete 5 threat detection exercises',
+      target: 5,
+      current: 0,
+      xpReward: 500,
+      type: 'threat-detection'
+    },
+    {
+      id: 'vulnerability-scan-1',
+      title: '🔍 Vulnerability Hunter',
+      description: 'Identify 3 critical vulnerabilities',
+      target: 3,
+      current: 0,
+      xpReward: 350,
+      type: 'vulnerability-scan'
+    },
+    {
+      id: 'secure-coding-1',
+      title: '💻 Secure Code Champion',
+      description: 'Fix 4 security code issues',
+      target: 4,
+      current: 0,
+      xpReward: 400,
+      type: 'secure-coding'
+    },
+    {
+      id: 'incident-response-1',
+      title: '🚨 Incident Responder',
+      description: 'Handle 2 security incidents',
+      target: 2,
+      current: 0,
+      xpReward: 300,
+      type: 'incident-response'
+    }
+  ]);
+
+  // --- Legacy Challenge State for Global Access ---
   const [completedExercises, setCompletedExercises] = useState(0);
   const [challengeIdx, setChallengeIdx] = useState<number | null>(null);
 
@@ -31,12 +82,55 @@ const YouthPortal = () => {
   // Handler for completing an exercise
   const handleCompleteExercise = () => {
     setCompletedExercises((prev) => prev + 1);
+    
+    // Update threat detection challenge
+    setWeeklyChallenges(prev => prev.map(challenge => {
+      if (challenge.type === 'threat-detection' && challenge.current < challenge.target) {
+        const newCurrent = challenge.current + 1;
+        const isComplete = newCurrent >= challenge.target;
+        
+        if (isComplete) {
+          // Award bonus XP
+          setUserStats(prevStats => ({
+            ...prevStats,
+            xp: prevStats.xp + challenge.xpReward,
+            totalEarnedXP: prevStats.totalEarnedXP + challenge.xpReward
+          }));
+        }
+        
+        return { ...challenge, current: newCurrent };
+      }
+      return challenge;
+    }));
+    
     setChallengeIdx((prevIdx) =>
       prevIdx !== null && prevIdx + 1 < WEEKLY_EXERCISES_COUNT ? prevIdx + 1 : null
     );
     if ((challengeIdx !== null ? challengeIdx + 1 : completedExercises + 1) >= WEEKLY_EXERCISES_COUNT) {
       setChallengeIdx(null);
     }
+  };
+
+  // Handler for completing other challenge types
+  const handleChallengeProgress = (type: WeeklyChallengeType['type']) => {
+    setWeeklyChallenges(prev => prev.map(challenge => {
+      if (challenge.type === type && challenge.current < challenge.target) {
+        const newCurrent = challenge.current + 1;
+        const isComplete = newCurrent >= challenge.target;
+        
+        if (isComplete) {
+          // Award bonus XP
+          setUserStats(prevStats => ({
+            ...prevStats,
+            xp: prevStats.xp + challenge.xpReward,
+            totalEarnedXP: prevStats.totalEarnedXP + challenge.xpReward
+          }));
+        }
+        
+        return { ...challenge, current: newCurrent };
+      }
+      return challenge;
+    }));
   };
 
   // Handler for going back in challenge
@@ -144,6 +238,9 @@ const YouthPortal = () => {
           <Leaderboard
             onContinueChallenge={handleContinueChallenge}
             completedExercises={completedExercises}
+            weeklyChallenges={weeklyChallenges}
+            userStats={userStats}
+            onChallengeProgress={handleChallengeProgress}
           />
         )}
         {activeTab === 'notes' && <CybersecurityNotes />}
