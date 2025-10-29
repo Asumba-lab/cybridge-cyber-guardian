@@ -33,6 +33,16 @@ const moduleReviews = {
     ],
     recommendations: "Experiment with ML-based security tools and explore advanced threat prediction models.",
   },
+  4: {
+    title: 'Incident Response - Review',
+    summary: "You've mastered the structured approach to detecting, containing, and recovering from cybersecurity incidents.",
+    keyPoints: [
+      "Understanding the NIST Incident Response lifecycle and its phases.",
+      "Effective containment strategies and digital forensics fundamentals.",
+      "Post-incident analysis and continuous improvement processes.",
+    ],
+    recommendations: "Practice with incident response simulations and develop IR playbooks for common scenarios.",
+  },
   5: {
     title: 'Ethical Hacking - Review',
     summary: "Congratulations on completing your journey into ethical hacking and penetration testing!",
@@ -276,6 +286,152 @@ const moduleDetails = {
       },
     ],
     tip: "Start experimenting with simple ML projects! Try building a spam detector or analyzing network logs with Python and scikit-learn."
+  },
+  4: {
+    title: 'Incident Response',
+    intro: "Master the art of responding to cybersecurity incidents. Learn how organizations detect, contain, and recover from security breaches while minimizing damage and maintaining business operations.",
+    lessons: [
+      {
+        name: "Understanding Incident Response",
+        content: "Incident Response (IR) is the organized approach to addressing and managing security breaches or cyberattacks. The goal is to handle the situation in a way that limits damage and reduces recovery time and costs.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>What is a Security Incident?:</b> Any event that compromises confidentiality, integrity, or availability of systems or data.</li>
+            <li><b>Why IR Matters:</b> The average cost of a data breach is $4.45 million—proper IR can reduce this significantly.</li>
+            <li><b>Speed is Critical:</b> The faster you respond, the less damage attackers can cause. Time to detection and response is key.</li>
+            <li><b>IR Team Roles:</b> Incident Commander, Security Analysts, Forensic Investigators, Communications Lead, Legal Counsel.</li>
+            <li><b>24/7 Readiness:</b> Cyber attacks don't follow business hours—IR teams must be ready to respond anytime.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "The Incident Response Lifecycle",
+        content: "NIST defines a structured IR lifecycle with distinct phases. Following this framework ensures comprehensive and effective incident handling.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>1. Preparation:</b> Build IR capabilities, train staff, develop playbooks, and establish tools before incidents occur.</li>
+            <li><b>2. Detection & Analysis:</b> Identify potential incidents through monitoring, alerts, and user reports; determine scope and severity.</li>
+            <li><b>3. Containment:</b> Stop the attack from spreading—short-term (isolate systems) and long-term (rebuild infrastructure).</li>
+            <li><b>4. Eradication:</b> Remove the attacker's presence completely—delete malware, close backdoors, patch vulnerabilities.</li>
+            <li><b>5. Recovery:</b> Restore systems to normal operations while monitoring for signs the attacker is returning.</li>
+            <li><b>6. Lessons Learned:</b> Post-incident review to understand what happened and improve future response capabilities.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Preparation Phase: Building IR Capabilities",
+        content: "The most important phase happens BEFORE an incident. Organizations must invest in tools, training, and planning to respond effectively when attacks occur.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Incident Response Plan:</b> Documented procedures defining roles, communication channels, and escalation paths.</li>
+            <li><b>Playbooks:</b> Step-by-step guides for responding to specific incident types (ransomware, data breach, DDoS).</li>
+            <li><b>IR Tools:</b> SIEM systems, forensic tools, threat intelligence feeds, secure communication channels.</li>
+            <li><b>Team Training:</b> Regular drills and tabletop exercises to practice incident response under pressure.</li>
+            <li><b>Asset Inventory:</b> Knowing what systems and data you have is essential for protecting them effectively.</li>
+            <li><b>Backup Strategy:</b> Regular, tested backups stored offline can save organizations from ransomware disasters.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Detection & Analysis: Finding the Needle in the Haystack",
+        content: "Detecting incidents quickly is crucial, but distinguishing real attacks from false alarms requires skilled analysis and the right tools.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Detection Sources:</b> SIEM alerts, IDS/IPS, antivirus, user reports, threat intelligence, anomaly detection.</li>
+            <li><b>Triage & Prioritization:</b> Not all alerts are equal—assess severity, scope, and business impact to prioritize response.</li>
+            <li><b>Initial Analysis:</b> Gather basic information (affected systems, attack type, timeline) before deeper investigation.</li>
+            <li><b>Indicators of Compromise (IOCs):</b> Evidence of intrusion (malicious IPs, file hashes, suspicious behaviors).</li>
+            <li><b>Common Mistakes:</b> Alert fatigue, ignoring warnings, inadequate documentation, jumping to conclusions.</li>
+            <li><b>Documentation:</b> Record everything from the moment detection occurs—this is critical for forensics and legal proceedings.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Containment Strategies: Stopping the Bleeding",
+        content: "Once an incident is confirmed, the priority shifts to containing it—preventing further damage while preserving evidence for investigation.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Short-term Containment:</b> Immediate actions to limit spread (network isolation, blocking IPs, disabling accounts).</li>
+            <li><b>Long-term Containment:</b> More permanent fixes while maintaining operations (system patches, configuration changes).</li>
+            <li><b>Isolation vs. Shutdown:</b> Sometimes keeping systems running (isolated) provides intelligence about the attack.</li>
+            <li><b>Evidence Preservation:</b> Don't destroy forensic evidence in your rush to contain—document everything!</li>
+            <li><b>Communication Blackout:</b> Attackers may be monitoring your systems—use out-of-band secure channels.</li>
+            <li><b>Business Impact:</b> Balance security needs with business operations—complete shutdown may cause more harm than good.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Eradication & Recovery: Getting Back to Business",
+        content: "After containment, the focus shifts to completely removing the threat and safely restoring operations while preventing re-infection.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Root Cause Analysis:</b> Understand how attackers got in to prevent recurrence (vulnerability, social engineering, stolen credentials).</li>
+            <li><b>Complete Removal:</b> Delete malware, close backdoors, remove unauthorized accounts, revoke compromised credentials.</li>
+            <li><b>System Hardening:</b> Patch vulnerabilities, update configurations, strengthen access controls before bringing systems back online.</li>
+            <li><b>Validation:</b> Verify systems are clean before restoration—attackers often leave hidden persistence mechanisms.</li>
+            <li><b>Monitored Recovery:</b> Bring systems back gradually with enhanced monitoring to detect if attackers return.</li>
+            <li><b>Testing:</b> Ensure systems work properly and security controls are effective before declaring full recovery.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Post-Incident Activities: Learning from Experience",
+        content: "The lessons learned phase is where organizations turn a negative experience into improved security posture for the future.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Post-Incident Report:</b> Detailed documentation of timeline, actions taken, effectiveness, and costs.</li>
+            <li><b>Lessons Learned Meeting:</b> Blame-free discussion with all stakeholders about what worked and what didn't.</li>
+            <li><b>Process Improvements:</b> Update IR plans, playbooks, and procedures based on real-world experience.</li>
+            <li><b>Security Enhancements:</b> Implement new controls, tools, or training to prevent similar incidents.</li>
+            <li><b>Metrics & KPIs:</b> Track mean time to detect (MTTD) and mean time to respond (MTTR) to measure improvement.</li>
+            <li><b>Regulatory Compliance:</b> Many industries require formal incident reporting and post-incident analysis.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Digital Forensics Fundamentals",
+        content: "Computer forensics is the science of collecting, preserving, analyzing, and presenting digital evidence—crucial for understanding incidents and supporting legal action.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Chain of Custody:</b> Documented trail of evidence handling to ensure admissibility in court.</li>
+            <li><b>Forensic Imaging:</b> Create exact copies of storage devices without altering original evidence.</li>
+            <li><b>Memory Forensics:</b> Analyze RAM to find evidence that exists only while systems are running (passwords, encryption keys).</li>
+            <li><b>Log Analysis:</b> System, application, and network logs provide timeline of attacker activities.</li>
+            <li><b>Forensic Tools:</b> Autopsy, FTK (Forensic Toolkit), Volatility (memory analysis), Wireshark (network forensics).</li>
+            <li><b>Legal Considerations:</b> Work with legal counsel—improper forensics can make evidence inadmissible.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Communication During Incidents",
+        content: "Effective communication is critical during incidents—with internal teams, executives, customers, regulators, and sometimes the public.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Internal Communication:</b> Keep stakeholders informed with regular updates—avoid surprises for leadership.</li>
+            <li><b>Customer Notification:</b> Many laws require timely notification when customer data is compromised.</li>
+            <li><b>Regulatory Reporting:</b> GDPR, HIPAA, and other regulations mandate incident reporting within specific timeframes.</li>
+            <li><b>Media Relations:</b> Prepared statements from trained spokespeople—never let technical staff talk to media unprepared!</li>
+            <li><b>Transparency vs. Security:</b> Balance transparency with not revealing information that helps attackers.</li>
+            <li><b>Message Consistency:</b> Ensure all communications are consistent to avoid confusion and maintain trust.</li>
+          </ul>
+        ),
+      },
+      {
+        name: "Common Incident Types & Response",
+        content: "Different incident types require different response approaches. Understanding common scenarios helps you respond faster and more effectively.",
+        notes: (
+          <ul className="list-disc ml-5 text-purple-100 mt-2 text-sm space-y-1">
+            <li><b>Ransomware:</b> Isolate immediately, don't pay ransom, restore from backups, report to law enforcement.</li>
+            <li><b>Data Breach:</b> Determine what was accessed/stolen, assess impact, notify affected parties, offer credit monitoring.</li>
+            <li><b>DDoS Attack:</b> Activate mitigation services, implement rate limiting, work with ISP, maintain communication.</li>
+            <li><b>Insider Threat:</b> Work with HR and legal, preserve evidence, revoke access, conduct discrete investigation.</li>
+            <li><b>Phishing Campaign:</b> Block malicious emails, notify users, reset compromised credentials, provide awareness training.</li>
+            <li><b>Advanced Persistent Threat (APT):</b> Often requires external IR firms, extensive forensics, and complete infrastructure rebuild.</li>
+          </ul>
+        ),
+      },
+    ],
+    tip: "Practice incident response through tabletop exercises and simulations. Every organization should have an IR plan—don't wait for a real incident to figure it out!"
   },
   5: {
     title: 'Ethical Hacking',
@@ -551,8 +707,8 @@ const LearningPath = ({
       id: 1,
       title: 'Cybersecurity Fundamentals',
       description: 'Learn the basics of cybersecurity and threat landscape',
-      progress: 100,
-      status: 'completed',
+      progress: 0,
+      status: 'progress-based',
       duration: '2 hours',
       difficulty: 'Beginner'
     },
@@ -560,8 +716,8 @@ const LearningPath = ({
       id: 2,
       title: 'Threat Detection & Analysis',
       description: 'Understand how to identify and analyze cyber threats',
-      progress: 65,
-      status: 'current',
+      progress: 0,
+      status: 'progress-based',
       duration: '3 hours',
       difficulty: 'Intermediate'
     },
@@ -570,7 +726,7 @@ const LearningPath = ({
       title: 'Machine Learning in Cybersecurity',
       description: 'Explore ML applications in threat detection',
       progress: 0,
-      status: 'locked',
+      status: 'unlocked',
       duration: '4 hours',
       difficulty: 'Advanced'
     },
@@ -579,7 +735,7 @@ const LearningPath = ({
       title: 'Incident Response',
       description: 'Learn how to respond to cybersecurity incidents',
       progress: 0,
-      status: 'locked',
+      status: 'unlocked',
       duration: '3 hours',
       difficulty: 'Intermediate'
     },
@@ -588,7 +744,7 @@ const LearningPath = ({
       title: 'Ethical Hacking',
       description: 'Understand penetration testing and vulnerability assessment',
       progress: 0,
-      status: 'locked',
+      status: 'unlocked',
       duration: '5 hours',
       difficulty: 'Advanced'
     }
@@ -608,6 +764,8 @@ const LearningPath = ({
     switch (status) {
       case 'completed': return <CheckCircle className="h-6 w-6 text-green-400" />;
       case 'current': return <Play className="h-6 w-6 text-cyan-400" />;
+      case 'progress-based': return <Circle className="h-6 w-6 text-cyan-400" />;
+      case 'unlocked': return <CheckCircle className="h-6 w-6 text-purple-400" />;
       case 'locked': return <Lock className="h-6 w-6 text-gray-500" />;
       default: return <Circle className="h-6 w-6 text-gray-500" />;
     }
@@ -891,12 +1049,12 @@ const LearningPath = ({
               </div>
               
               <div className="flex-shrink-0">
-                {module.status === 'current' && (
+                {(module.status === 'current' || module.status === 'progress-based' || module.status === 'unlocked') && (
                   <button
                     className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-cyan-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
                     onClick={() => handleContinue(module.id)}
                   >
-                    <span>Continue</span>
+                    <span>{module.status === 'progress-based' && module.progress === 0 ? 'Start' : 'Continue'}</span>
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 )}
