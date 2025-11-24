@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Building, Shield, AlertTriangle, TrendingUp, Users, Activity } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Building, Shield, AlertTriangle, TrendingUp, Users, Activity, Clock, RefreshCw } from 'lucide-react';
 import SecurityScore from './SecurityScore';
 import VulnerabilityAssessment from './VulnerabilityAssessment';
 import ComplianceTracker from './ComplianceTracker';
@@ -9,14 +9,84 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
 
 const SMEAnalytics = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [isRefreshing, setIsRefreshing] = useState(false);
   
-  const smeStats = {
+  // Base stats with dynamic variations
+  const [smeStats, setSmeStats] = useState({
     totalSMEs: 1247,
     protectedSMEs: 1156,
     highRiskSMEs: 91,
     avgSecurityScore: 78.5,
     threatsBlocked: 3429,
     complianceRate: 92.3
+  });
+
+  // Update current time every second
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timeInterval);
+  }, []);
+
+  // Auto-refresh data every 30 seconds
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      refreshData();
+    }, 30000);
+
+    return () => clearInterval(refreshInterval);
+  }, []);
+
+  // Function to simulate real-time data updates
+  const refreshData = () => {
+    setIsRefreshing(true);
+    
+    // Simulate API call with slight data variations
+    setTimeout(() => {
+      setSmeStats(prev => ({
+        totalSMEs: prev.totalSMEs + Math.floor(Math.random() * 3), // Gradual growth
+        protectedSMEs: prev.protectedSMEs + Math.floor(Math.random() * 2),
+        highRiskSMEs: Math.max(85, prev.highRiskSMEs + Math.floor(Math.random() * 3) - 1), // Random fluctuation
+        avgSecurityScore: Math.min(100, prev.avgSecurityScore + (Math.random() * 0.5 - 0.2)), // Gradual improvement
+        threatsBlocked: prev.threatsBlocked + Math.floor(Math.random() * 15), // Continuous threat blocking
+        complianceRate: Math.min(100, prev.complianceRate + (Math.random() * 0.3 - 0.1))
+      }));
+      
+      setLastUpdated(new Date());
+      setIsRefreshing(false);
+    }, 800);
+  };
+
+  // Format time for display
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: true 
+    });
+  };
+
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long',
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  const formatLastUpdated = (date) => {
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - date.getTime()) / 1000); // difference in seconds
+    
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
   // Security score trend data (last 6 months)
@@ -63,14 +133,44 @@ const SMEAnalytics = () => {
 
   return (
     <div className="space-y-6 md:space-y-8 px-2 sm:px-4 md:px-0">
-      {/* Header */}
+      {/* Header with Real-Time Clock */}
       <div className="text-center mb-6 sm:mb-8 md:mb-12">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-4">
           SME Security Analytics
         </h1>
-        <p className="text-gray-400 text-xs sm:text-base md:text-lg">
+        <p className="text-gray-400 text-xs sm:text-base md:text-lg mb-4">
           Comprehensive cybersecurity insights for Small & Medium Enterprises
         </p>
+        
+        {/* Real-Time Date & Time Display */}
+        <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-xl p-4 sm:p-6 backdrop-blur-lg inline-block">
+          <div className="flex items-center justify-center space-x-4">
+            <Clock className="h-6 w-6 text-cyan-400 animate-pulse" />
+            <div className="text-left">
+              <div className="text-xl sm:text-2xl font-bold text-white">
+                {formatTime(currentTime)}
+              </div>
+              <div className="text-xs sm:text-sm text-gray-300">
+                {formatDate(currentTime)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Last Updated Indicator */}
+        <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-gray-400">
+          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
+          <span>
+            Last updated: {formatLastUpdated(lastUpdated)}
+          </span>
+          <button
+            onClick={refreshData}
+            disabled={isRefreshing}
+            className="ml-2 px-3 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg text-xs font-medium transition-all disabled:opacity-50"
+          >
+            {isRefreshing ? 'Updating...' : 'Refresh Now'}
+          </button>
+        </div>
       </div>
 
       {/* SME Stats Overview */}
