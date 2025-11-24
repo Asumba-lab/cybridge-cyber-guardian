@@ -23,14 +23,37 @@ const SMEAnalytics = () => {
     complianceRate: 92.3
   });
 
-  // Update current time every second
+  // Update current time every second and check for month changes
   useEffect(() => {
     const timeInterval = setInterval(() => {
-      setCurrentTime(new Date());
+      const now = new Date();
+      const prevMonth = currentTime.getMonth();
+      const currentMonth = now.getMonth();
+      
+      setCurrentTime(now);
+      
+      // If month changed, regenerate chart data with new month labels
+      if (prevMonth !== currentMonth) {
+        const newMonths = generateLast6Months();
+        
+        setSecurityTrendData(prev => {
+          return prev.map((item, index) => ({
+            ...item,
+            month: newMonths[index]
+          }));
+        });
+        
+        setComplianceTrendData(prev => {
+          return prev.map((item, index) => ({
+            ...item,
+            month: newMonths[index]
+          }));
+        });
+      }
     }, 1000);
 
     return () => clearInterval(timeInterval);
-  }, []);
+  }, [currentTime]);
 
   // Auto-refresh data every 30 seconds
   useEffect(() => {
