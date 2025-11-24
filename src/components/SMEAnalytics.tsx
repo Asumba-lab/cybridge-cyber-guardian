@@ -128,15 +128,31 @@ const SMEAnalytics = () => {
     return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
+  // Generate last 6 months dynamically based on current date
+  const generateLast6Months = () => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const now = new Date();
+    const result = [];
+    
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      result.push(months[date.getMonth()]);
+    }
+    return result;
+  };
+
   // Security score trend data (last 6 months) - with dynamic updates
-  const [securityTrendData, setSecurityTrendData] = useState([
-    { month: 'Apr', score: 68.2 },
-    { month: 'May', score: 71.5 },
-    { month: 'Jun', score: 73.8 },
-    { month: 'Jul', score: 75.1 },
-    { month: 'Aug', score: 76.9 },
-    { month: 'Sep', score: 78.5 },
-  ]);
+  const [securityTrendData, setSecurityTrendData] = useState(() => {
+    const months = generateLast6Months();
+    return [
+      { month: months[0], score: 68.2 },
+      { month: months[1], score: 71.5 },
+      { month: months[2], score: 73.8 },
+      { month: months[3], score: 75.1 },
+      { month: months[4], score: 76.9 },
+      { month: months[5], score: 78.5 },
+    ];
+  });
 
   // Threats by category - with dynamic updates
   const [threatCategoryData, setThreatCategoryData] = useState([
@@ -155,14 +171,17 @@ const SMEAnalytics = () => {
   ]);
 
   // Compliance trend over time - with dynamic updates
-  const [complianceTrendData, setComplianceTrendData] = useState([
-    { month: 'Apr', compliance: 85.2, target: 90 },
-    { month: 'May', compliance: 87.5, target: 90 },
-    { month: 'Jun', compliance: 88.9, target: 90 },
-    { month: 'Jul', compliance: 90.1, target: 90 },
-    { month: 'Aug', compliance: 91.4, target: 90 },
-    { month: 'Sep', compliance: 92.3, target: 90 },
-  ]);
+  const [complianceTrendData, setComplianceTrendData] = useState(() => {
+    const months = generateLast6Months();
+    return [
+      { month: months[0], compliance: 85.2, target: 90 },
+      { month: months[1], compliance: 87.5, target: 90 },
+      { month: months[2], compliance: 88.9, target: 90 },
+      { month: months[3], compliance: 90.1, target: 90 },
+      { month: months[4], compliance: 91.4, target: 90 },
+      { month: months[5], compliance: 92.3, target: 90 },
+    ];
+  });
 
   const tabs = [
     { id: 'overview', label: 'Security Overview', icon: Shield },
