@@ -47,6 +47,7 @@ const SMEAnalytics = () => {
     
     // Simulate API call with slight data variations
     setTimeout(() => {
+      // Update main stats
       setSmeStats(prev => ({
         totalSMEs: prev.totalSMEs + Math.floor(Math.random() * 3), // Gradual growth
         protectedSMEs: prev.protectedSMEs + Math.floor(Math.random() * 2),
@@ -55,6 +56,44 @@ const SMEAnalytics = () => {
         threatsBlocked: prev.threatsBlocked + Math.floor(Math.random() * 15), // Continuous threat blocking
         complianceRate: Math.min(100, prev.complianceRate + (Math.random() * 0.3 - 0.1))
       }));
+      
+      // Update security trend data - update last month's score
+      setSecurityTrendData(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          score: Math.min(100, updated[updated.length - 1].score + (Math.random() * 0.4 - 0.1))
+        };
+        return updated;
+      });
+
+      // Update threat category data - increment threats
+      setThreatCategoryData(prev => 
+        prev.map(threat => ({
+          ...threat,
+          count: threat.count + Math.floor(Math.random() * 8)
+        }))
+      );
+
+      // Update SME distribution - gradual shifts
+      setSmeDistributionData(prev => {
+        const shift = Math.floor(Math.random() * 3) - 1;
+        return [
+          { ...prev[0], value: Math.max(850, prev[0].value + shift) },
+          { ...prev[1], value: Math.max(290, prev[1].value - Math.floor(shift / 2)) },
+          { ...prev[2], value: Math.max(85, prev[2].value + Math.floor(Math.random() * 2) - 1) }
+        ];
+      });
+
+      // Update compliance trend - update last month's compliance
+      setComplianceTrendData(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          compliance: Math.min(100, updated[updated.length - 1].compliance + (Math.random() * 0.3 - 0.05))
+        };
+        return updated;
+      });
       
       setLastUpdated(new Date());
       setIsRefreshing(false);
@@ -89,41 +128,41 @@ const SMEAnalytics = () => {
     return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Security score trend data (last 6 months)
-  const securityTrendData = [
+  // Security score trend data (last 6 months) - with dynamic updates
+  const [securityTrendData, setSecurityTrendData] = useState([
     { month: 'Apr', score: 68.2 },
     { month: 'May', score: 71.5 },
     { month: 'Jun', score: 73.8 },
     { month: 'Jul', score: 75.1 },
     { month: 'Aug', score: 76.9 },
     { month: 'Sep', score: 78.5 },
-  ];
+  ]);
 
-  // Threats by category
-  const threatCategoryData = [
+  // Threats by category - with dynamic updates
+  const [threatCategoryData, setThreatCategoryData] = useState([
     { category: 'Malware', count: 892 },
     { category: 'Phishing', count: 1245 },
     { category: 'Ransomware', count: 534 },
     { category: 'DDoS', count: 421 },
     { category: 'Data Breach', count: 337 },
-  ];
+  ]);
 
-  // SME distribution by security status
-  const smeDistributionData = [
+  // SME distribution by security status - with dynamic updates
+  const [smeDistributionData, setSmeDistributionData] = useState([
     { name: 'Secure', value: 856, color: '#10b981' },
     { name: 'Moderate', value: 300, color: '#f59e0b' },
     { name: 'High Risk', value: 91, color: '#ef4444' },
-  ];
+  ]);
 
-  // Compliance trend over time
-  const complianceTrendData = [
+  // Compliance trend over time - with dynamic updates
+  const [complianceTrendData, setComplianceTrendData] = useState([
     { month: 'Apr', compliance: 85.2, target: 90 },
     { month: 'May', compliance: 87.5, target: 90 },
     { month: 'Jun', compliance: 88.9, target: 90 },
     { month: 'Jul', compliance: 90.1, target: 90 },
     { month: 'Aug', compliance: 91.4, target: 90 },
     { month: 'Sep', compliance: 92.3, target: 90 },
-  ];
+  ]);
 
   const tabs = [
     { id: 'overview', label: 'Security Overview', icon: Shield },
@@ -271,9 +310,15 @@ const SMEAnalytics = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
           {/* Security Score Trend */}
           <div className="bg-black/40 border border-cyan-500/30 p-4 sm:p-6 rounded-xl backdrop-blur-lg">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center">
-              <TrendingUp className="h-5 w-5 mr-2 text-cyan-400" />
-              Security Score Trend
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <TrendingUp className="h-5 w-5 mr-2 text-cyan-400" />
+                Security Score Trend
+              </div>
+              <div className="text-xs text-gray-400 flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                Live
+              </div>
             </h3>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={securityTrendData}>
@@ -294,9 +339,15 @@ const SMEAnalytics = () => {
 
           {/* Threats by Category */}
           <div className="bg-black/40 border border-purple-500/30 p-4 sm:p-6 rounded-xl backdrop-blur-lg">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center">
-              <AlertTriangle className="h-5 w-5 mr-2 text-purple-400" />
-              Threats by Category
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <AlertTriangle className="h-5 w-5 mr-2 text-purple-400" />
+                Threats by Category
+              </div>
+              <div className="text-xs text-gray-400 flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                Live
+              </div>
             </h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={threatCategoryData}>
@@ -317,9 +368,15 @@ const SMEAnalytics = () => {
 
           {/* SME Distribution */}
           <div className="bg-black/40 border border-green-500/30 p-4 sm:p-6 rounded-xl backdrop-blur-lg">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center">
-              <Shield className="h-5 w-5 mr-2 text-green-400" />
-              SME Security Distribution
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <Shield className="h-5 w-5 mr-2 text-green-400" />
+                SME Security Distribution
+              </div>
+              <div className="text-xs text-gray-400 flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                Live
+              </div>
             </h3>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
@@ -350,9 +407,15 @@ const SMEAnalytics = () => {
 
           {/* Compliance Trend */}
           <div className="bg-black/40 border border-yellow-500/30 p-4 sm:p-6 rounded-xl backdrop-blur-lg">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center">
-              <Activity className="h-5 w-5 mr-2 text-yellow-400" />
-              Compliance Progress
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <Activity className="h-5 w-5 mr-2 text-yellow-400" />
+                Compliance Progress
+              </div>
+              <div className="text-xs text-gray-400 flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                Live
+              </div>
             </h3>
             <ResponsiveContainer width="100%" height={250}>
               <AreaChart data={complianceTrendData}>
