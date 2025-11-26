@@ -25,6 +25,8 @@ interface LeaderboardProps {
   weeklyChallenges?: WeeklyChallengeType[];
   userStats?: UserStats;
   onChallengeProgress?: (type: WeeklyChallengeType['type']) => void;
+  onStartChallengeTrack?: (trackType: 'vulnerability-scan' | 'secure-coding' | 'incident-response') => void;
+  trackProgress?: { [key: string]: string[] };
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({
@@ -33,6 +35,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
   weeklyChallenges = [],
   userStats,
   onChallengeProgress,
+  onStartChallengeTrack,
+  trackProgress = {},
 }) => {
   // Calculate dynamic leaderboard based on user's earned XP
   const leaderboardData = useMemo(() => {
@@ -256,8 +260,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
                       onClick={() => {
                         if (challenge.type === 'threat-detection' && onContinueChallenge) {
                           onContinueChallenge();
-                        } else if (onChallengeProgress) {
-                          onChallengeProgress(challenge.type);
+                        } else if (challenge.type !== 'threat-detection' && onStartChallengeTrack) {
+                          onStartChallengeTrack(challenge.type);
                         }
                       }}
                     >
