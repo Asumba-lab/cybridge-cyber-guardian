@@ -5,6 +5,7 @@ import LearningPath from './LearningPath';
 import SkillAssessment from './SkillAssessment';
 import Leaderboard from './Leaderboard';
 import CybersecurityNotes from './CybersecurityNotes';
+import ChallengeTrack from './ChallengeTrack';
 
 const WEEKLY_EXERCISES_COUNT = 5;
 
@@ -26,6 +27,14 @@ const YouthPortal = () => {
     streak: 7,
     completedModules: 23,
     totalEarnedXP: 0
+  });
+
+  // Challenge Track State
+  const [activeChallengeTrack, setActiveChallengeTrack] = useState<'vulnerability-scan' | 'secure-coding' | 'incident-response' | null>(null);
+  const [trackProgress, setTrackProgress] = useState<{ [key: string]: string[] }>({
+    'vulnerability-scan': [],
+    'secure-coding': [],
+    'incident-response': []
   });
 
   // --- Weekly Challenges State ---
@@ -143,6 +152,61 @@ const YouthPortal = () => {
     setCompletedExercises(0);
   };
 
+  // Challenge Track Handlers
+  const handleStartChallengeTrack = (trackType: 'vulnerability-scan' | 'secure-coding' | 'incident-response') => {
+    setActiveChallengeTrack(trackType);
+    setActiveTab('challenge-track');
+  };
+
+  const handleBackFromTrack = () => {
+    setActiveChallengeTrack(null);
+    setActiveTab('leaderboard');
+  };
+
+  const handleCompleteTask = (trackType: string, taskId: string) => {
+    // Add task to completed list
+    setTrackProgress(prev => ({
+      ...prev,
+      [trackType]: [...prev[trackType], taskId]
+    }));
+
+    // Calculate XP reward based on task
+    const xpRewards: { [key: string]: number } = {
+      'vuln-1': 100, 'vuln-2': 150, 'vuln-3': 200,
+      'code-1': 100, 'code-2': 150, 'code-3': 200, 'code-4': 200,
+      'incident-1': 100, 'incident-2': 250
+    };
+
+    const xpReward = xpRewards[taskId] || 100;
+
+    // Award XP
+    setUserStats(prev => ({
+      ...prev,
+      xp: prev.xp + xpReward,
+      totalEarnedXP: prev.totalEarnedXP + xpReward
+    }));
+
+    // Update corresponding weekly challenge
+    setWeeklyChallenges(prev => prev.map(challenge => {
+      if (challenge.type === trackType && challenge.current < challenge.target) {
+        const newCurrent = challenge.current + 1;
+        const isComplete = newCurrent >= challenge.target;
+        
+        if (isComplete) {
+          // Award bonus XP for completing the weekly challenge
+          setUserStats(prevStats => ({
+            ...prevStats,
+            xp: prevStats.xp + challenge.xpReward,
+            totalEarnedXP: prevStats.totalEarnedXP + challenge.xpReward
+          }));
+        }
+        
+        return { ...challenge, current: newCurrent };
+      }
+      return challenge;
+    }));
+  };
+
   const tabs = [
     { id: 'learning', label: 'Learning Path', icon: BookOpen },
     { id: 'assessment', label: 'Skill Assessment', icon: Target },
@@ -241,6 +305,16 @@ const YouthPortal = () => {
             weeklyChallenges={weeklyChallenges}
             userStats={userStats}
             onChallengeProgress={handleChallengeProgress}
+            onStartChallengeTrack={handleStartChallengeTrack}
+            trackProgress={trackProgress}
+          />
+        )}
+        {activeTab === 'challenge-track' && (
+          <ChallengeTrack
+            trackType={activeChallengeTrack}
+            onBack={handleBackFromTrack}
+            onCompleteTask={handleCompleteTask}
+            trackProgress={trackProgress}
           />
         )}
         {activeTab === 'notes' && <CybersecurityNotes />}
