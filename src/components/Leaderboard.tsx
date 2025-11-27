@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
-import { Trophy, Medal, Star, TrendingUp, Target, Zap } from 'lucide-react';
+import React, { useMemo, useEffect, useState } from 'react';
+import { Trophy, Medal, Star, TrendingUp, Target, Zap, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface WeeklyChallengeType {
   id: string;
@@ -38,33 +39,55 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
   onStartChallengeTrack,
   trackProgress = {},
 }) => {
-  // Calculate dynamic leaderboard based on user's earned XP
-  const leaderboardData = useMemo(() => {
-    const baseData = [
-      { rank: 1, name: 'Alex Chen', xp: 15847, level: 28, badge: 'Expert', streak: 45 },
-      { rank: 2, name: 'Sarah Kumar', xp: 14532, level: 26, badge: 'Advanced', streak: 32 },
-      { rank: 3, name: 'Mike Johnson', xp: 13891, level: 25, badge: 'Advanced', streak: 28 },
-      { rank: 4, name: 'Emma Davis', xp: 12456, level: 23, badge: 'Intermediate', streak: 21 },
-      { rank: 5, name: 'You', xp: 11234, level: 21, badge: 'Intermediate', streak: 15 },
-      { rank: 6, name: 'Tom Wilson', xp: 10987, level: 20, badge: 'Intermediate', streak: 18 },
-      { rank: 7, name: 'Lisa Brown', xp: 9876, level: 19, badge: 'Beginner', streak: 12 },
-      { rank: 8, name: 'David Lee', xp: 8765, level: 17, badge: 'Beginner', streak: 9 }
-    ];
+  const [loading, setLoading] = useState(true);
+  const [realLeaderboard, setRealLeaderboard] = useState<Array<{
+    rank: number;
+    name: string;
+    level: number;
+    xp: number;
+    streak: number;
+    badge: string;
+  }>>([]);
 
-    // Update user's XP if userStats provided
-    if (userStats) {
-      const userIndex = baseData.findIndex(u => u.name === 'You');
-      if (userIndex !== -1) {
-        baseData[userIndex].xp = userStats.xp;
-        baseData[userIndex].level = userStats.level;
-        baseData[userIndex].streak = userStats.streak;
+  useEffect(() => {
+    const loadLeaderboard = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, username, level, total_xp, current_streak')
+          .order('total_xp', { ascending: false })
+          .limit(50);
+
+        if (error) throw error;
+
+        if (data) {
+          const leaderboardWithRanks = data.map((profile, index) => ({
+            rank: index + 1,
+            name: profile.username || 'Anonymous',
+            level: profile.level,
+            xp: profile.total_xp,
+            streak: profile.current_streak,
+            badge: profile.total_xp > 2000 ? 'Expert' : profile.total_xp > 1000 ? 'Advanced' : 'Intermediate'
+          }));
+          
+          setRealLeaderboard(leaderboardWithRanks);
+        }
+      } catch (error) {
+        console.error('Error loading leaderboard:', error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
-    // Sort by XP and recalculate ranks
-    const sorted = [...baseData].sort((a, b) => b.xp - a.xp);
-    return sorted.map((user, index) => ({ ...user, rank: index + 1 }));
-  }, [userStats]);
+    loadLeaderboard();
+  }, [userStats?.xp]);
+
+  const leaderboardData = useMemo(() => {
+    if (loading || realLeaderboard.length === 0) {
+      return [];
+    }
+    return realLeaderboard;
+  }, [realLeaderboard, loading]);
 
   const getRankIcon = (rank) => {
     switch (rank) {
@@ -96,40 +119,50 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
       <div className="bg-gradient-to-r from-yellow-500/20 to-purple-500/20 border border-yellow-500/30 p-8 rounded-xl">
         <h2 className="text-2xl font-bold text-white text-center mb-8">🏆 Top Performers</h2>
         
-        <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
-          {/* Second Place */}
-          <div className="text-center order-1">
-            <div className="bg-gradient-to-br from-gray-300 to-gray-500 w-20 h-16 rounded-t-lg mx-auto mb-4 flex items-end justify-center">
-              <span className="text-white font-bold text-lg pb-2">2</span>
-            </div>
-            <div className="bg-black/30 p-4 rounded-lg">
-              <p className="text-white font-bold">{leaderboardData[1].name}</p>
-              <p className="text-gray-400 text-sm">{leaderboardData[1].xp.toLocaleString()} XP</p>
-            </div>
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
           </div>
+        ) : leaderboardData.length === 0 ? (
+          <div className="text-center py-8 text-slate-400">
+            No leaderboard data yet. Complete challenges to appear here!
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+            {/* Second Place */}
+            <div className="text-center order-1">
+              <div className="bg-gradient-to-br from-gray-300 to-gray-500 w-20 h-16 rounded-t-lg mx-auto mb-4 flex items-end justify-center">
+                <span className="text-white font-bold text-lg pb-2">2</span>
+              </div>
+              <div className="bg-black/30 p-4 rounded-lg">
+                <p className="text-white font-bold">{leaderboardData[1]?.name || 'N/A'}</p>
+                <p className="text-gray-400 text-sm">{leaderboardData[1]?.xp.toLocaleString() || '0'} XP</p>
+              </div>
+            </div>
 
-          {/* First Place */}
-          <div className="text-center order-2">
-            <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 w-20 h-20 rounded-t-lg mx-auto mb-4 flex items-end justify-center">
-              <span className="text-white font-bold text-xl pb-2">1</span>
+            {/* First Place */}
+            <div className="text-center order-2">
+              <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 w-20 h-20 rounded-t-lg mx-auto mb-4 flex items-end justify-center">
+                <span className="text-white font-bold text-xl pb-2">1</span>
+              </div>
+              <div className="bg-black/30 p-4 rounded-lg border border-yellow-500/50">
+                <p className="text-white font-bold">{leaderboardData[0]?.name || 'N/A'}</p>
+                <p className="text-yellow-400 text-sm font-semibold">{leaderboardData[0]?.xp.toLocaleString() || '0'} XP</p>
+              </div>
             </div>
-            <div className="bg-black/30 p-4 rounded-lg border border-yellow-500/50">
-              <p className="text-white font-bold">{leaderboardData[0].name}</p>
-              <p className="text-yellow-400 text-sm font-semibold">{leaderboardData[0].xp.toLocaleString()} XP</p>
-            </div>
-          </div>
 
-          {/* Third Place */}
-          <div className="text-center order-3">
-            <div className="bg-gradient-to-br from-orange-400 to-orange-600 w-20 h-12 rounded-t-lg mx-auto mb-4 flex items-end justify-center">
-              <span className="text-white font-bold pb-2">3</span>
-            </div>
-            <div className="bg-black/30 p-4 rounded-lg">
-              <p className="text-white font-bold">{leaderboardData[2].name}</p>
-              <p className="text-gray-400 text-sm">{leaderboardData[2].xp.toLocaleString()} XP</p>
+            {/* Third Place */}
+            <div className="text-center order-3">
+              <div className="bg-gradient-to-br from-orange-400 to-orange-600 w-20 h-12 rounded-t-lg mx-auto mb-4 flex items-end justify-center">
+                <span className="text-white font-bold pb-2">3</span>
+              </div>
+              <div className="bg-black/30 p-4 rounded-lg">
+                <p className="text-white font-bold">{leaderboardData[2]?.name || 'N/A'}</p>
+                <p className="text-gray-400 text-sm">{leaderboardData[2]?.xp.toLocaleString() || '0'} XP</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Full Leaderboard */}
@@ -142,51 +175,59 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
         </div>
 
         <div className="divide-y divide-white/10">
-          {leaderboardData.map((user) => (
-            <div
-              key={user.rank}
-              className={`p-4 transition-all duration-200 hover:bg-white/5 ${
-                user.name === 'You' ? 'bg-cyan-500/10 border-l-4 border-cyan-500' : ''
-              }`}
-            >
-              <div className="flex items-center space-x-4">
-                {/* Rank */}
-                <div className="flex-shrink-0 w-12 flex justify-center">
-                  {getRankIcon(user.rank)}
-                </div>
-
-                {/* User Info */}
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-1">
-                    <h3 className={`font-bold ${user.name === 'You' ? 'text-cyan-400' : 'text-white'}`}>
-                      {user.name}
-                    </h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getBadgeColor(user.badge)}`}>
-                      {user.badge}
-                    </span>
+          {loading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+            </div>
+          ) : leaderboardData.length === 0 ? (
+            <div className="text-center py-8 text-slate-400">
+              No leaderboard data yet. Complete challenges to appear here!
+            </div>
+          ) : (
+            leaderboardData.map((user) => (
+              <div
+                key={user.rank}
+                className="p-4 transition-all duration-200 hover:bg-white/5"
+              >
+                <div className="flex items-center space-x-4">
+                  {/* Rank */}
+                  <div className="flex-shrink-0 w-12 flex justify-center">
+                    {getRankIcon(user.rank)}
                   </div>
-                  <div className="flex items-center space-x-4 text-sm text-gray-400">
-                    <span>Level {user.level}</span>
-                    <span>{user.xp.toLocaleString()} XP</span>
-                    <span className="flex items-center space-x-1">
-                      <TrendingUp className="h-3 w-3" />
-                      <span>{user.streak} day streak</span>
-                    </span>
-                  </div>
-                </div>
 
-                {/* Progress Indicator */}
-                <div className="flex-shrink-0">
-                  <div className="w-16 bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-cyan-500 to-purple-600 h-2 rounded-full"
-                      style={{ width: `${(user.xp % 1000) / 10}%` }}
-                    />
+                  {/* User Info */}
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-1">
+                      <h3 className="font-bold text-white">
+                        {user.name}
+                      </h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getBadgeColor(user.badge)}`}>
+                        {user.badge}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-4 text-sm text-gray-400">
+                      <span>Level {user.level}</span>
+                      <span>{user.xp.toLocaleString()} XP</span>
+                      <span className="flex items-center space-x-1">
+                        <TrendingUp className="h-3 w-3" />
+                        <span>{user.streak} day streak</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Progress Indicator */}
+                  <div className="flex-shrink-0">
+                    <div className="w-16 bg-gray-700 rounded-full h-2">
+                      <div
+                        className="bg-gradient-to-r from-cyan-500 to-purple-600 h-2 rounded-full"
+                        style={{ width: `${(user.xp % 1000) / 10}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 

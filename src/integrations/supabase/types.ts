@@ -14,7 +14,174 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      challenge_tracks: {
+        Row: {
+          completed_at: string | null
+          completed_tasks: number
+          id: string
+          started_at: string
+          tasks: Json
+          total_tasks: number
+          total_xp_earned: number
+          track_name: string
+          track_type: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_tasks?: number
+          id?: string
+          started_at?: string
+          tasks?: Json
+          total_tasks: number
+          total_xp_earned?: number
+          track_name: string
+          track_type: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          completed_tasks?: number
+          id?: string
+          started_at?: string
+          tasks?: Json
+          total_tasks?: number
+          total_xp_earned?: number
+          track_name?: string
+          track_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_tracks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          current_streak: number
+          id: string
+          last_active: string
+          level: number
+          total_xp: number
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          id: string
+          last_active?: string
+          level?: number
+          total_xp?: number
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_active?: string
+          level?: number
+          total_xp?: number
+          username?: string | null
+        }
+        Relationships: []
+      }
+      user_challenges: {
+        Row: {
+          challenge_title: string
+          challenge_type: string
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          current_progress: number
+          id: string
+          target: number
+          user_id: string
+          week_start: string
+          xp_reward: number
+        }
+        Insert: {
+          challenge_title: string
+          challenge_type: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          current_progress?: number
+          id?: string
+          target: number
+          user_id: string
+          week_start?: string
+          xp_reward: number
+        }
+        Update: {
+          challenge_title?: string
+          challenge_type?: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          current_progress?: number
+          id?: string
+          target?: number
+          user_id?: string
+          week_start?: string
+          xp_reward?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_challenges_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          id: string
+          last_accessed: string
+          module_id: string
+          module_name: string
+          progress_percentage: number
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          id?: string
+          last_accessed?: string
+          module_id: string
+          module_name: string
+          progress_percentage?: number
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          id?: string
+          last_accessed?: string
+          module_id?: string
+          module_name?: string
+          progress_percentage?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
