@@ -1,11 +1,12 @@
-
-import React, { useState } from 'react';
-import { Users, Trophy, BookOpen, Target, Star, ChevronRight, Notebook } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Users, Trophy, BookOpen, Target, Star, ChevronRight, Notebook, Loader2 } from 'lucide-react';
 import LearningPath from './LearningPath';
 import SkillAssessment from './SkillAssessment';
 import Leaderboard from './Leaderboard';
 import CybersecurityNotes from './CybersecurityNotes';
 import ChallengeTrack from './ChallengeTrack';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const WEEKLY_EXERCISES_COUNT = 5;
 
@@ -21,11 +22,15 @@ interface WeeklyChallengeType {
 
 const YouthPortal = () => {
   const [activeTab, setActiveTab] = useState('learning');
+  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  const { toast } = useToast();
+  
   const [userStats, setUserStats] = useState({
-    level: 12,
-    xp: 2847,
-    streak: 7,
-    completedModules: 23,
+    level: 1,
+    xp: 0,
+    streak: 0,
+    completedModules: 0,
     totalEarnedXP: 0
   });
 
@@ -38,48 +43,150 @@ const YouthPortal = () => {
   });
 
   // --- Weekly Challenges State ---
-  const [weeklyChallenges, setWeeklyChallenges] = useState<WeeklyChallengeType[]>([
-    {
-      id: 'threat-detection-1',
-      title: '🎯 Threat Detection Master',
-      description: 'Complete 5 threat detection exercises',
-      target: 5,
-      current: 0,
-      xpReward: 500,
-      type: 'threat-detection'
-    },
-    {
-      id: 'vulnerability-scan-1',
-      title: '🔍 Vulnerability Hunter',
-      description: 'Identify 3 critical vulnerabilities',
-      target: 3,
-      current: 0,
-      xpReward: 350,
-      type: 'vulnerability-scan'
-    },
-    {
-      id: 'secure-coding-1',
-      title: '💻 Secure Code Champion',
-      description: 'Fix 4 security code issues',
-      target: 4,
-      current: 0,
-      xpReward: 400,
-      type: 'secure-coding'
-    },
-    {
-      id: 'incident-response-1',
-      title: '🚨 Incident Responder',
-      description: 'Handle 2 security incidents',
-      target: 2,
-      current: 0,
-      xpReward: 300,
-      type: 'incident-response'
-    }
-  ]);
+  const [weeklyChallenges, setWeeklyChallenges] = useState<WeeklyChallengeType[]>([]);
 
   // --- Legacy Challenge State for Global Access ---
   const [completedExercises, setCompletedExercises] = useState(0);
   const [challengeIdx, setChallengeIdx] = useState<number | null>(null);
+
+  // Load user data on mount
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        setUserId(user.id);
+
+        // Load profile
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        if (profile) {
+          setUserStats({
+            level: profile.level,
+            xp: profile.total_xp,
+            streak: profile.current_streak,
+            completedModules: 0,
+            totalEarnedXP: profile.total_xp
+          });
+        }
+
+        // Load progress
+        const { data: progressData, error: progressError } = await supabase
+          .from('user_progress')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (progressError) throw progressError;
+
+        const completedCount = progressData?.filter(p => p.completed).length || 0;
+        setUserStats(prev => ({ ...prev, completedModules: completedCount }));
+
+        // Load weekly challenges
+        const weekStart = new Date();
+        weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+        
+        const { data: challengesData, error: challengesError } = await supabase
+          .from('user_challenges')
+          .select('*')
+          .eq('user_id', user.id)
+          .gte('week_start', weekStart.toISOString().split('T')[0]);
+
+        if (challengesError) throw challengesError;
+
+        if (challengesData && challengesData.length > 0) {
+          setWeeklyChallenges(challengesData.map(c => ({
+            id: c.id,
+            title: c.challenge_title,
+            description: `Complete ${c.target} ${c.challenge_type} tasks`,
+            target: c.target,
+            current: c.current_progress,
+            xpReward: c.xp_reward,
+            type: c.challenge_type as any
+          })));
+        } else {
+          // Initialize default weekly challenges
+          await initializeWeeklyChallenges(user.id);
+        }
+
+        // Load active challenge track
+        const { data: trackData, error: trackError } = await supabase
+          .from('challenge_tracks')
+          .select('*')
+          .eq('user_id', user.id)
+          .is('completed_at', null)
+          .order('started_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (trackError && trackError.code !== 'PGRST116') throw trackError;
+
+        if (trackData) {
+          setActiveChallengeTrack(trackData.track_type as any);
+        }
+
+      } catch (error) {
+        console.error('Error loading user data:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load your progress. Please refresh the page.",
+          variant: "destructive"
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, [toast]);
+
+  const initializeWeeklyChallenges = async (userId: string) => {
+    const defaultChallenges = [
+      { type: 'threat-detection', title: '🎯 Threat Detection Master', target: 5, xpReward: 500 },
+      { type: 'vulnerability-scan', title: '🔍 Vulnerability Hunter', target: 3, xpReward: 350 },
+      { type: 'secure-coding', title: '💻 Secure Code Champion', target: 4, xpReward: 400 },
+      { type: 'incident-response', title: '🚨 Incident Responder', target: 2, xpReward: 300 }
+    ];
+
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+
+    for (const challenge of defaultChallenges) {
+      await supabase.from('user_challenges').insert({
+        user_id: userId,
+        challenge_type: challenge.type,
+        challenge_title: challenge.title,
+        current_progress: 0,
+        target: challenge.target,
+        xp_reward: challenge.xpReward,
+        completed: false,
+        week_start: weekStart.toISOString().split('T')[0]
+      });
+    }
+
+    const { data } = await supabase
+      .from('user_challenges')
+      .select('*')
+      .eq('user_id', userId);
+
+    if (data) {
+      setWeeklyChallenges(data.map(c => ({
+        id: c.id,
+        title: c.challenge_title,
+        description: `Complete ${c.target} ${c.challenge_type} tasks`,
+        target: c.target,
+        current: c.current_progress,
+        xpReward: c.xp_reward,
+        type: c.challenge_type as any
+      })));
+    }
+  };
 
   // Handler to start/resume challenge
   const handleContinueChallenge = () => {
@@ -89,57 +196,127 @@ const YouthPortal = () => {
   };
 
   // Handler for completing an exercise
-  const handleCompleteExercise = () => {
-    setCompletedExercises((prev) => prev + 1);
-    
-    // Update threat detection challenge
-    setWeeklyChallenges(prev => prev.map(challenge => {
-      if (challenge.type === 'threat-detection' && challenge.current < challenge.target) {
-        const newCurrent = challenge.current + 1;
-        const isComplete = newCurrent >= challenge.target;
-        
-        if (isComplete) {
-          // Award bonus XP
-          setUserStats(prevStats => ({
-            ...prevStats,
-            xp: prevStats.xp + challenge.xpReward,
-            totalEarnedXP: prevStats.totalEarnedXP + challenge.xpReward
+  const handleCompleteExercise = async () => {
+    if (!userId) return;
+
+    try {
+      setCompletedExercises((prev) => prev + 1);
+      
+      const xpGained = 50;
+      const newXp = userStats.xp + xpGained;
+
+      // Update profile in database
+      await supabase
+        .from('profiles')
+        .update({ total_xp: newXp })
+        .eq('id', userId);
+
+      setUserStats(prev => ({
+        ...prev,
+        xp: newXp,
+        totalEarnedXP: newXp
+      }));
+
+      // Update threat detection challenge
+      const challenge = weeklyChallenges.find(c => c.type === 'threat-detection');
+      if (challenge && challenge.current < challenge.target) {
+        const newProgress = challenge.current + 1;
+        const isCompleted = newProgress >= challenge.target;
+
+        await supabase
+          .from('user_challenges')
+          .update({
+            current_progress: newProgress,
+            completed: isCompleted,
+            completed_at: isCompleted ? new Date().toISOString() : null
+          })
+          .eq('id', challenge.id);
+
+        if (isCompleted) {
+          const bonusXp = newXp + challenge.xpReward;
+          await supabase
+            .from('profiles')
+            .update({ total_xp: bonusXp })
+            .eq('id', userId);
+          
+          setUserStats(prev => ({
+            ...prev,
+            xp: bonusXp,
+            totalEarnedXP: bonusXp
           }));
+
+          toast({
+            title: "Challenge Completed!",
+            description: `+${challenge.xpReward} XP bonus earned!`,
+          });
         }
-        
-        return { ...challenge, current: newCurrent };
+
+        setWeeklyChallenges(prev => prev.map(c =>
+          c.id === challenge.id ? { ...c, current: newProgress } : c
+        ));
       }
-      return challenge;
-    }));
-    
-    setChallengeIdx((prevIdx) =>
-      prevIdx !== null && prevIdx + 1 < WEEKLY_EXERCISES_COUNT ? prevIdx + 1 : null
-    );
-    if ((challengeIdx !== null ? challengeIdx + 1 : completedExercises + 1) >= WEEKLY_EXERCISES_COUNT) {
-      setChallengeIdx(null);
+      
+      setChallengeIdx((prevIdx) =>
+        prevIdx !== null && prevIdx + 1 < WEEKLY_EXERCISES_COUNT ? prevIdx + 1 : null
+      );
+      if ((challengeIdx !== null ? challengeIdx + 1 : completedExercises + 1) >= WEEKLY_EXERCISES_COUNT) {
+        setChallengeIdx(null);
+      }
+    } catch (error) {
+      console.error('Error completing exercise:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save progress.",
+        variant: "destructive"
+      });
     }
   };
 
   // Handler for completing other challenge types
-  const handleChallengeProgress = (type: WeeklyChallengeType['type']) => {
-    setWeeklyChallenges(prev => prev.map(challenge => {
-      if (challenge.type === type && challenge.current < challenge.target) {
-        const newCurrent = challenge.current + 1;
-        const isComplete = newCurrent >= challenge.target;
+  const handleChallengeProgress = async (type: WeeklyChallengeType['type']) => {
+    if (!userId) return;
+
+    try {
+      const challenge = weeklyChallenges.find(c => c.type === type && c.current < c.target);
+      if (!challenge) return;
+
+      const newProgress = challenge.current + 1;
+      const isCompleted = newProgress >= challenge.target;
+
+      await supabase
+        .from('user_challenges')
+        .update({
+          current_progress: newProgress,
+          completed: isCompleted,
+          completed_at: isCompleted ? new Date().toISOString() : null
+        })
+        .eq('id', challenge.id);
+
+      if (isCompleted) {
+        const newXp = userStats.xp + challenge.xpReward;
+        await supabase
+          .from('profiles')
+          .update({ total_xp: newXp })
+          .eq('id', userId);
         
-        if (isComplete) {
-          // Award bonus XP
-          setUserStats(prevStats => ({
-            ...prevStats,
-            xp: prevStats.xp + challenge.xpReward,
-            totalEarnedXP: prevStats.totalEarnedXP + challenge.xpReward
-          }));
-        }
-        
-        return { ...challenge, current: newCurrent };
+        setUserStats(prev => ({
+          ...prev,
+          xp: newXp,
+          totalEarnedXP: newXp
+        }));
+
+        toast({
+          title: "Challenge Completed!",
+          description: `+${challenge.xpReward} XP bonus earned!`,
+        });
       }
-      return challenge;
-    }));
+
+      setWeeklyChallenges(prev => prev.map(c =>
+        c.id === challenge.id ? { ...c, current: newProgress } : c
+      ));
+    } catch (error) {
+      console.error('Error updating challenge:', error);
+    }
   };
 
   // Handler for going back in challenge
@@ -153,9 +330,33 @@ const YouthPortal = () => {
   };
 
   // Challenge Track Handlers
-  const handleStartChallengeTrack = (trackType: 'vulnerability-scan' | 'secure-coding' | 'incident-response') => {
-    setActiveChallengeTrack(trackType);
-    setActiveTab('challenge-track');
+  const handleStartChallengeTrack = async (trackType: 'vulnerability-scan' | 'secure-coding' | 'incident-response') => {
+    if (!userId) return;
+
+    try {
+      const trackName = trackType === 'vulnerability-scan' 
+        ? 'Vulnerability Hunter' 
+        : trackType === 'secure-coding' 
+        ? 'Secure Code Champion' 
+        : 'Incident Responder';
+
+      await supabase
+        .from('challenge_tracks')
+        .insert({
+          user_id: userId,
+          track_name: trackName,
+          track_type: trackType,
+          tasks: [],
+          total_xp_earned: 0,
+          completed_tasks: 0,
+          total_tasks: 8
+        });
+
+      setActiveChallengeTrack(trackType);
+      setActiveTab('challenge-track');
+    } catch (error) {
+      console.error('Error starting track:', error);
+    }
   };
 
   const handleBackFromTrack = () => {
@@ -163,7 +364,9 @@ const YouthPortal = () => {
     setActiveTab('leaderboard');
   };
 
-  const handleCompleteTask = (trackType: string, taskId: string) => {
+  const handleCompleteTask = async (trackType: string, taskId: string) => {
+    if (!userId) return;
+
     // Add task to completed list
     setTrackProgress(prev => ({
       ...prev,
@@ -179,32 +382,56 @@ const YouthPortal = () => {
 
     const xpReward = xpRewards[taskId] || 100;
 
-    // Award XP
-    setUserStats(prev => ({
-      ...prev,
-      xp: prev.xp + xpReward,
-      totalEarnedXP: prev.totalEarnedXP + xpReward
-    }));
+    try {
+      // Award XP
+      const newXp = userStats.xp + xpReward;
+      await supabase
+        .from('profiles')
+        .update({ total_xp: newXp })
+        .eq('id', userId);
 
-    // Update corresponding weekly challenge
-    setWeeklyChallenges(prev => prev.map(challenge => {
-      if (challenge.type === trackType && challenge.current < challenge.target) {
-        const newCurrent = challenge.current + 1;
-        const isComplete = newCurrent >= challenge.target;
-        
-        if (isComplete) {
-          // Award bonus XP for completing the weekly challenge
-          setUserStats(prevStats => ({
-            ...prevStats,
-            xp: prevStats.xp + challenge.xpReward,
-            totalEarnedXP: prevStats.totalEarnedXP + challenge.xpReward
+      setUserStats(prev => ({
+        ...prev,
+        xp: newXp,
+        totalEarnedXP: newXp
+      }));
+
+      // Update corresponding weekly challenge
+      const challenge = weeklyChallenges.find(c => c.type === trackType);
+      if (challenge && challenge.current < challenge.target) {
+        const newProgress = challenge.current + 1;
+        const isCompleted = newProgress >= challenge.target;
+
+        await supabase
+          .from('user_challenges')
+          .update({
+            current_progress: newProgress,
+            completed: isCompleted,
+            completed_at: isCompleted ? new Date().toISOString() : null
+          })
+          .eq('id', challenge.id);
+
+        if (isCompleted) {
+          const bonusXp = newXp + challenge.xpReward;
+          await supabase
+            .from('profiles')
+            .update({ total_xp: bonusXp })
+            .eq('id', userId);
+          
+          setUserStats(prev => ({
+            ...prev,
+            xp: bonusXp,
+            totalEarnedXP: bonusXp
           }));
         }
-        
-        return { ...challenge, current: newCurrent };
+
+        setWeeklyChallenges(prev => prev.map(c =>
+          c.id === challenge.id ? { ...c, current: newProgress } : c
+        ));
       }
-      return challenge;
-    }));
+    } catch (error) {
+      console.error('Error completing task:', error);
+    }
   };
 
   const tabs = [
@@ -213,6 +440,14 @@ const YouthPortal = () => {
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
     { id: 'notes', label: 'Notes Library', icon: Notebook }
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 md:space-y-8 px-2 sm:px-4 md:px-0">
