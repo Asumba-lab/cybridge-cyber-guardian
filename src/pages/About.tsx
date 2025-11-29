@@ -6,35 +6,35 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const About = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">
+  <div className="min-h-screen bg-gradient-to-br from-about-bg-start via-about-bg-mid to-about-bg-end py-12 px-4">
     <div className="max-w-6xl mx-auto">
       {/* Header Section */}
       <div className="text-center mb-12 animate-float">
         <div className="flex items-center justify-center mb-6 space-x-4">
-          <Shield className="text-cyan-400 h-16 w-16 animate-pulse-glow" />
-          <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <Shield className="text-cyber-cyan h-16 w-16 animate-pulse-glow" />
+          <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink bg-clip-text text-transparent">
             Cybridge AI
           </h1>
-          <Brain className="text-purple-400 h-16 w-16 animate-pulse-glow" />
+          <Brain className="text-cyber-purple h-16 w-16 animate-pulse-glow" />
         </div>
-        <p className="text-xl sm:text-2xl text-cyan-300 font-semibold mb-4">
+        <p className="text-xl sm:text-2xl text-text-accent font-semibold mb-4">
           Bridging Cybersecurity &amp; AI for a Safer Digital Future
         </p>
-        <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+        <p className="text-lg text-text-secondary max-w-3xl mx-auto">
           An advanced, ML-powered cybersecurity platform democratizing digital safety through education, innovation, and accessible technology.
         </p>
       </div>
 
       {/* Mission Statement */}
-      <Card className="mb-8 bg-black/40 border-cyan-500/30 backdrop-blur-sm">
+      <Card className="mb-8 bg-black/50 border-cyber-cyan/40 backdrop-blur-sm shadow-lg shadow-cyber-cyan/10">
         <CardHeader>
-          <CardTitle className="text-3xl text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl text-center bg-gradient-to-r from-cyber-cyan to-cyber-purple bg-clip-text text-transparent">
             Our Mission
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-gray-300 space-y-4">
+        <CardContent className="text-text-secondary space-y-4">
           <p className="text-lg leading-relaxed">
-            <strong className="text-cyan-400">Cybridge AI</strong> is more than a cybersecurity platform—it's a movement to empower individuals and organizations with the knowledge, tools, and technologies needed to thrive in an increasingly digital world. By combining cutting-edge machine learning with accessible education, we're building bridges between complex security challenges and practical, human-centered solutions.
+            <strong className="text-cyber-cyan">Cybridge AI</strong> is more than a cybersecurity platform—it's a movement to empower individuals and organizations with the knowledge, tools, and technologies needed to thrive in an increasingly digital world. By combining cutting-edge machine learning with accessible education, we're building bridges between complex security challenges and practical, human-centered solutions.
           </p>
           <p className="text-lg leading-relaxed">
             We believe that cybersecurity should not be a privilege reserved for large corporations with massive budgets. Instead, it should be accessible to small businesses, educational institutions, and young learners who represent the future of our digital society. Through innovation, education, and collaboration, we're making this vision a reality.
@@ -44,14 +44,14 @@ const About = () => (
 
       {/* Core Features Grid */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <Card className="bg-gradient-to-br from-cyan-900/40 to-blue-900/40 border-cyan-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300">
+        <Card className="bg-gradient-to-br from-cyber-cyan/20 to-cyber-blue/20 border-cyber-cyan/40 backdrop-blur-sm hover:shadow-xl hover:shadow-cyber-cyan/30 transition-all duration-300">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <Target className="h-8 w-8 text-cyan-400" />
-              <CardTitle className="text-2xl text-cyan-300">Real-Time Threat Intelligence</CardTitle>
+              <Target className="h-8 w-8 text-cyber-cyan" />
+              <CardTitle className="text-2xl text-cyber-cyan">Real-Time Threat Intelligence</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-gray-300 space-y-3">
+          <CardContent className="text-text-secondary space-y-3">
             <p>
               Our ML-powered dashboard provides instant visibility into cyber threats using supervised and unsupervised learning to classify attacks, detect anomalies, and predict emerging vulnerabilities.
             </p>
@@ -64,14 +64,14 @@ const About = () => (
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300">
+        <Card className="bg-gradient-to-br from-cyber-purple/20 to-cyber-pink/20 border-cyber-purple/40 backdrop-blur-sm hover:shadow-xl hover:shadow-cyber-purple/30 transition-all duration-300">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <BookOpen className="h-8 w-8 text-purple-400" />
-              <CardTitle className="text-2xl text-purple-300">Youth Training Portal</CardTitle>
+              <BookOpen className="h-8 w-8 text-cyber-purple" />
+              <CardTitle className="text-2xl text-cyber-purple">Youth Training Portal</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-gray-300 space-y-3">
+          <CardContent className="text-text-secondary space-y-3">
             <p>
               A gamified, adaptive learning environment that uses reinforcement learning to personalize cybersecurity education for young learners, making complex concepts engaging and accessible.
             </p>
@@ -84,14 +84,14 @@ const About = () => (
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-green-500/20 transition-all duration-300">
+        <Card className="bg-gradient-to-br from-cyber-green/20 to-cyber-blue/20 border-cyber-green/40 backdrop-blur-sm hover:shadow-xl hover:shadow-cyber-green/30 transition-all duration-300">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <TrendingUp className="h-8 w-8 text-green-400" />
-              <CardTitle className="text-2xl text-green-300">SME Analytics</CardTitle>
+              <TrendingUp className="h-8 w-8 text-cyber-green" />
+              <CardTitle className="text-2xl text-cyber-green">SME Analytics</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-gray-300 space-y-3">
+          <CardContent className="text-text-secondary space-y-3">
             <p>
               Comprehensive security analytics designed specifically for small and medium enterprises, providing enterprise-grade protection without the enterprise-grade complexity or cost.
             </p>
@@ -104,14 +104,14 @@ const About = () => (
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-900/40 border-yellow-500/30 backdrop-blur-sm hover:shadow-xl hover:shadow-yellow-500/20 transition-all duration-300">
+        <Card className="bg-gradient-to-br from-cyber-yellow/20 to-cyber-orange/20 border-cyber-yellow/40 backdrop-blur-sm hover:shadow-xl hover:shadow-cyber-yellow/30 transition-all duration-300">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <Brain className="h-8 w-8 text-yellow-400" />
-              <CardTitle className="text-2xl text-yellow-300">Complete ML Pipeline</CardTitle>
+              <Brain className="h-8 w-8 text-cyber-yellow" />
+              <CardTitle className="text-2xl text-cyber-yellow">Complete ML Pipeline</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-gray-300 space-y-3">
+          <CardContent className="text-text-secondary space-y-3">
             <p>
               A comprehensive implementation of all five machine learning paradigms, demonstrating how diverse AI approaches work together to create a robust cybersecurity ecosystem.
             </p>
@@ -127,15 +127,15 @@ const About = () => (
       </div>
 
       {/* UN SDG Alignment */}
-      <Card className="mb-8 bg-gradient-to-r from-blue-900/40 via-purple-900/40 to-pink-900/40 border-blue-500/30 backdrop-blur-sm">
+      <Card className="mb-8 bg-gradient-to-r from-cyber-blue/20 via-cyber-purple/20 to-cyber-pink/20 border-cyber-blue/40 backdrop-blur-sm shadow-lg shadow-cyber-purple/10">
         <CardHeader>
           <div className="flex items-center justify-center space-x-3 mb-2">
-            <Globe className="h-10 w-10 text-blue-400" />
-            <CardTitle className="text-3xl text-center bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
+            <Globe className="h-10 w-10 text-cyber-blue" />
+            <CardTitle className="text-3xl text-center bg-gradient-to-r from-cyber-blue to-cyber-pink bg-clip-text text-transparent">
               Contributing to UN Sustainable Development Goals
             </CardTitle>
           </div>
-          <p className="text-center text-gray-300 text-lg">
+          <p className="text-center text-text-secondary text-lg">
             Cybridge AI directly supports multiple UN SDGs, advancing global progress toward a more equitable, educated, and secure world.
           </p>
         </CardHeader>
@@ -143,30 +143,30 @@ const About = () => (
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
-                <Badge className="bg-red-600 text-white text-lg px-3 py-1">SDG 4</Badge>
+                <Badge className="bg-red-600 text-white text-lg px-3 py-1 shrink-0">SDG 4</Badge>
                 <div>
-                  <h3 className="text-xl font-bold text-red-400 mb-2">Quality Education</h3>
-                  <p className="text-gray-300 text-sm">
+                  <h3 className="text-xl font-bold text-cyber-pink mb-2">Quality Education</h3>
+                  <p className="text-text-secondary text-sm">
                     Our Youth Training Portal provides free, accessible cybersecurity education to learners worldwide, using adaptive AI to personalize learning experiences and ensure no one is left behind in digital literacy.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <Badge className="bg-purple-600 text-white text-lg px-3 py-1">SDG 8</Badge>
+                <Badge className="bg-purple-600 text-white text-lg px-3 py-1 shrink-0">SDG 8</Badge>
                 <div>
-                  <h3 className="text-xl font-bold text-purple-400 mb-2">Decent Work &amp; Economic Growth</h3>
-                  <p className="text-gray-300 text-sm">
+                  <h3 className="text-xl font-bold text-cyber-purple mb-2">Decent Work &amp; Economic Growth</h3>
+                  <p className="text-text-secondary text-sm">
                     By protecting SMEs from cyber threats and training youth in cybersecurity skills, we're fostering economic growth, creating employment opportunities, and building a skilled workforce for the digital economy.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <Badge className="bg-orange-600 text-white text-lg px-3 py-1">SDG 9</Badge>
+                <Badge className="bg-orange-600 text-white text-lg px-3 py-1 shrink-0">SDG 9</Badge>
                 <div>
-                  <h3 className="text-xl font-bold text-orange-400 mb-2">Industry, Innovation &amp; Infrastructure</h3>
-                  <p className="text-gray-300 text-sm">
+                  <h3 className="text-xl font-bold text-cyber-orange mb-2">Industry, Innovation &amp; Infrastructure</h3>
+                  <p className="text-text-secondary text-sm">
                     Cybridge AI showcases cutting-edge ML integration, promoting technological innovation and building resilient digital infrastructure that can scale from individual learners to enterprise deployments.
                   </p>
                 </div>
@@ -175,30 +175,30 @@ const About = () => (
 
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
-                <Badge className="bg-pink-600 text-white text-lg px-3 py-1">SDG 10</Badge>
+                <Badge className="bg-pink-600 text-white text-lg px-3 py-1 shrink-0">SDG 10</Badge>
                 <div>
-                  <h3 className="text-xl font-bold text-pink-400 mb-2">Reduced Inequalities</h3>
-                  <p className="text-gray-300 text-sm">
+                  <h3 className="text-xl font-bold text-cyber-pink mb-2">Reduced Inequalities</h3>
+                  <p className="text-text-secondary text-sm">
                     By democratizing access to advanced cybersecurity tools and education, we're reducing the digital divide and ensuring that protection against cyber threats isn't limited to those who can afford expensive solutions.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <Badge className="bg-blue-600 text-white text-lg px-3 py-1">SDG 16</Badge>
+                <Badge className="bg-blue-600 text-white text-lg px-3 py-1 shrink-0">SDG 16</Badge>
                 <div>
-                  <h3 className="text-xl font-bold text-blue-400 mb-2">Peace, Justice &amp; Strong Institutions</h3>
-                  <p className="text-gray-300 text-sm">
+                  <h3 className="text-xl font-bold text-cyber-blue mb-2">Peace, Justice &amp; Strong Institutions</h3>
+                  <p className="text-text-secondary text-sm">
                     Strong cybersecurity is fundamental to building peaceful, just societies. We empower institutions—from schools to small businesses—with tools to protect their data, operations, and stakeholders from digital threats.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <Badge className="bg-teal-600 text-white text-lg px-3 py-1">SDG 17</Badge>
+                <Badge className="bg-teal-600 text-white text-lg px-3 py-1 shrink-0">SDG 17</Badge>
                 <div>
-                  <h3 className="text-xl font-bold text-teal-400 mb-2">Partnerships for the Goals</h3>
-                  <p className="text-gray-300 text-sm">
+                  <h3 className="text-xl font-bold text-cyber-cyan mb-2">Partnerships for the Goals</h3>
+                  <p className="text-text-secondary text-sm">
                     Cybridge AI is built on open collaboration, leveraging open-source technologies and community-driven innovation to create solutions that benefit everyone, fostering global partnerships for cybersecurity.
                   </p>
                 </div>
@@ -209,41 +209,41 @@ const About = () => (
       </Card>
 
       {/* Technology Stack */}
-      <Card className="mb-8 bg-black/40 border-purple-500/30 backdrop-blur-sm">
+      <Card className="mb-8 bg-black/50 border-cyber-purple/40 backdrop-blur-sm shadow-lg shadow-cyber-purple/10">
         <CardHeader>
-          <CardTitle className="text-3xl text-center bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl text-center bg-gradient-to-r from-cyber-purple to-cyber-cyan bg-clip-text text-transparent">
             Built with Modern Technology
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4 text-center">
             <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-cyan-400">Frontend</h4>
-              <p className="text-gray-300 text-sm">React, TypeScript, Vite, Tailwind CSS, shadcn/ui, Lucide Icons</p>
+              <h4 className="text-lg font-semibold text-cyber-cyan">Frontend</h4>
+              <p className="text-text-secondary text-sm">React, TypeScript, Vite, Tailwind CSS, shadcn/ui, Lucide Icons</p>
             </div>
             <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-purple-400">Backend &amp; ML</h4>
-              <p className="text-gray-300 text-sm">Supabase, PostgreSQL, Machine Learning Pipelines (All 5 Paradigms)</p>
+              <h4 className="text-lg font-semibold text-cyber-purple">Backend &amp; ML</h4>
+              <p className="text-text-secondary text-sm">Supabase, PostgreSQL, Machine Learning Pipelines (All 5 Paradigms)</p>
             </div>
             <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-pink-400">Visualization</h4>
-              <p className="text-gray-300 text-sm">Recharts, Real-time Data Streams, Interactive Dashboards</p>
+              <h4 className="text-lg font-semibold text-cyber-pink">Visualization</h4>
+              <p className="text-text-secondary text-sm">Recharts, Real-time Data Streams, Interactive Dashboards</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Vision Statement */}
-      <Card className="mb-8 bg-gradient-to-br from-cyan-900/40 to-purple-900/40 border-cyan-500/30 backdrop-blur-sm">
+      <Card className="mb-8 bg-gradient-to-br from-cyber-cyan/20 to-cyber-purple/20 border-cyber-cyan/40 backdrop-blur-sm shadow-lg shadow-cyber-cyan/10">
         <CardHeader>
           <div className="flex items-center justify-center space-x-3">
-            <Lightbulb className="h-10 w-10 text-yellow-400" />
-            <CardTitle className="text-3xl text-center bg-gradient-to-r from-yellow-400 to-cyan-400 bg-clip-text text-transparent">
+            <Lightbulb className="h-10 w-10 text-cyber-yellow" />
+            <CardTitle className="text-3xl text-center bg-gradient-to-r from-cyber-yellow to-cyber-cyan bg-clip-text text-transparent">
               Our Vision for the Future
             </CardTitle>
           </div>
         </CardHeader>
-        <CardContent className="text-gray-300 space-y-4 text-center">
+        <CardContent className="text-text-secondary space-y-4 text-center">
           <p className="text-lg leading-relaxed">
             We envision a world where cybersecurity is not a barrier but an enabler—where businesses of all sizes can operate confidently in the digital realm, and where young people grow up with the skills and awareness needed to navigate an increasingly connected world safely.
           </p>
@@ -251,7 +251,7 @@ const About = () => (
             Through continuous innovation, education, and collaboration, Cybridge AI is helping to build this future—one learner, one business, one secure connection at a time.
           </p>
           <div className="pt-4">
-            <Badge variant="outline" className="text-cyan-400 border-cyan-400 text-lg px-6 py-2">
+            <Badge variant="outline" className="text-cyber-cyan border-cyber-cyan text-lg px-6 py-2">
               Join Us in Securing Tomorrow
             </Badge>
           </div>
@@ -261,28 +261,28 @@ const About = () => (
       {/* Call to Action */}
       <div className="text-center space-y-6">
         <div className="flex items-center justify-center space-x-3">
-          <Users className="h-8 w-8 text-cyan-400" />
-          <p className="text-xl text-gray-300">
+          <Users className="h-8 w-8 text-cyber-cyan" />
+          <p className="text-xl text-text-secondary">
             Ready to explore the platform?
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
             to="/"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyber-cyan to-cyber-blue text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-cyber-cyan/50 transition-all duration-300 hover:scale-105"
           >
             <Shield className="h-5 w-5" />
             <span>Launch Threat Dashboard</span>
           </Link>
           <Link
             to="/youth-login"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyber-purple to-cyber-pink text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-cyber-purple/50 transition-all duration-300 hover:scale-105"
           >
             <BookOpen className="h-5 w-5" />
             <span>Start Learning</span>
           </Link>
         </div>
-        <p className="text-gray-400 text-sm italic pt-4">
+        <p className="text-text-secondary/70 text-sm italic pt-4">
           Made with innovation and purpose for next-generation cyber defense and education
         </p>
       </div>

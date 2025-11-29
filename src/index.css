@@ -37,6 +37,23 @@
 
     --radius: 0.5rem;
 
+    /* Cybridge About Page Theme Colors */
+    --about-bg-start: 222 47% 11%;
+    --about-bg-mid: 280 65% 20%;
+    --about-bg-end: 222 47% 11%;
+    
+    --cyber-cyan: 188 100% 60%;
+    --cyber-purple: 270 70% 60%;
+    --cyber-pink: 330 80% 65%;
+    --cyber-blue: 210 100% 56%;
+    --cyber-green: 150 70% 50%;
+    --cyber-yellow: 45 100% 60%;
+    --cyber-orange: 25 95% 58%;
+    
+    --text-primary: 0 0% 98%;
+    --text-secondary: 214 15% 75%;
+    --text-accent: 188 100% 70%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -75,6 +92,23 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    
+    /* Cybridge About Page Dark Theme Colors (same as light for this page) */
+    --about-bg-start: 222 47% 11%;
+    --about-bg-mid: 280 65% 20%;
+    --about-bg-end: 222 47% 11%;
+    
+    --cyber-cyan: 188 100% 60%;
+    --cyber-purple: 270 70% 60%;
+    --cyber-pink: 330 80% 65%;
+    --cyber-blue: 210 100% 56%;
+    --cyber-green: 150 70% 50%;
+    --cyber-yellow: 45 100% 60%;
+    --cyber-orange: 25 95% 58%;
+    
+    --text-primary: 0 0% 98%;
+    --text-secondary: 214 15% 75%;
+    --text-accent: 188 100% 70%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
